@@ -7,8 +7,6 @@ package gr.ntua.swellrt.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import gr.ntua.swellrt.utils.AppUtils;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +15,7 @@ import java.util.Map;
  * @author nikos
  */
 @JsonInclude(Include.NON_NULL)
-public class StorkAttributeList {
+public class AttributeList {
 
 //    @JsonInclude(Include.NON_NULL)
 //    public class AttributeList {
@@ -35,9 +33,9 @@ public class StorkAttributeList {
 //    }
 
     private String status;
-    private Map<String, StorkAttributeTemplate> list;
+    private Map<String, AttributeTemplate> list;
 
-    public StorkAttributeList() {
+    public AttributeList() {
         this.status = "OK";
         this.list = new HashMap();
     }
@@ -51,11 +49,11 @@ public class StorkAttributeList {
     }
 
 //    @JsonSerialize(using = SerializeMapToValues.class)
-    public Map<String, StorkAttributeTemplate> getList() {
+    public Map<String, AttributeTemplate> getList() {
         return list;
     }
 
-    public void setList(Map<String, StorkAttributeTemplate> list) {
+    public void setList(Map<String, AttributeTemplate> list) {
         this.list = list;
     }
 

@@ -35,6 +35,9 @@ public class CountriesServiceImpl implements CountriesService{
                 return 1;
             }
             return c1.getName().compareTo(c2.getName());
+        }).map( country ->{
+              country.setName(country.getName().trim());
+              return country;
         }).collect(Collectors.toList()); 
                
          

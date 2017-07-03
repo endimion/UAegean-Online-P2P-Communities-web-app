@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class StorkResponse {
 
 //    private StorkAttributeTemplate eIdentifier;
-    private Map<String, StorkAttributeTemplate> receivedAttributes;
+    private Map<String, AttributeTemplate> receivedAttributes;
     private String token;
     private String status;
     private String timestamp;
@@ -35,11 +35,11 @@ public class StorkResponse {
         this.receivedAttributes = new HashMap<>();
     }
 
-    public Map<String, StorkAttributeTemplate> getReceivedAttributes() {
+    public Map<String, AttributeTemplate> getReceivedAttributes() {
         return receivedAttributes;
     }
 
-    public void setReceivedAttributes(Map<String, StorkAttributeTemplate> receivedAttributes) {
+    public void setReceivedAttributes(Map<String, AttributeTemplate> receivedAttributes) {
         this.receivedAttributes = receivedAttributes;
     }
 

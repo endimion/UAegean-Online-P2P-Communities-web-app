@@ -13,8 +13,8 @@ import gr.ntua.swellrt.model.dmo.StorkAttributesDMO;
 import gr.ntua.swellrt.model.dmo.StorkPersonMngDMO;
 import gr.ntua.swellrt.model.dmo.StrokAttributesMongoDMO;
 import gr.ntua.swellrt.pojo.ReceivedStorkAttribute;
-import gr.ntua.swellrt.pojo.StorkAttributeList;
-import gr.ntua.swellrt.pojo.StorkAttributeTemplate;
+import gr.ntua.swellrt.pojo.AttributeList;
+import gr.ntua.swellrt.pojo.AttributeTemplate;
 import gr.ntua.swellrt.pojo.StorkResponse;
 import gr.ntua.swellrt.pojo.UserCredentials;
 import gr.ntua.swellrt.service.StorkAttributeService;
@@ -236,13 +236,13 @@ public class Wrappers {
         return builder.build();
     }
 
-    public static StorkAttributeList wrapStorkAttrMongoDMOtoStorkAttrTmpl(List<StrokAttributesMongoDMO> attrlist) {
-        StorkAttributeList result = new StorkAttributeList();
-        Map<String, StorkAttributeTemplate> attributes = new HashMap();
+    public static AttributeList wrapStorkAttrMongoDMOtoStorkAttrTmpl(List<StrokAttributesMongoDMO> attrlist) {
+        AttributeList result = new AttributeList();
+        Map<String, AttributeTemplate> attributes = new HashMap();
 
         attrlist.stream().forEach(attrDMO -> {
             if (!attrDMO.getName().equals("UAgeanID")) {
-                StorkAttributeTemplate attr = new StorkAttributeTemplate();
+                AttributeTemplate attr = new AttributeTemplate();
                 attr.setComplex(attrDMO.getComplex());
                 attr.setRequired(attrDMO.getRequired());
                 attr.setValue(null);
@@ -253,13 +253,32 @@ public class Wrappers {
         return result;
     }
 
+    public static AttributeList wrapStorkAttrMongoDMOtoEidasAttrTmpl(List<StrokAttributesMongoDMO> attrlist) {
+        AttributeList result = new AttributeList();
+        Map<String, AttributeTemplate> attributes = new HashMap();
+
+        attrlist.stream()
+                .filter(attr -> {
+                    return !attr.getName().equals("UAgeanID");
+                })
+                .forEach(attrDMO -> {
+                    AttributeTemplate attr = new AttributeTemplate();
+                    attr.setComplex(attrDMO.getComplex());
+                    attr.setRequired(attrDMO.getRequired());
+                    attr.setValue(null);
+                    attributes.put(attrDMO.getEidasName(), attr);
+                });
+        result.setList(attributes);
+        return result;
+    }
+
     @Deprecated
-    public static StorkAttributeList wrapStorkAttrDMOtoStorkAttrTmpl(List<StorkAttributesDMO> attrDMOlist) {
-        StorkAttributeList result = new StorkAttributeList();
-        Map<String, StorkAttributeTemplate> attributes = new HashMap();
+    public static AttributeList wrapStorkAttrDMOtoStorkAttrTmpl(List<StorkAttributesDMO> attrDMOlist) {
+        AttributeList result = new AttributeList();
+        Map<String, AttributeTemplate> attributes = new HashMap();
 
         attrDMOlist.stream().forEach(attrDMO -> {
-            StorkAttributeTemplate attr = new StorkAttributeTemplate();
+            AttributeTemplate attr = new AttributeTemplate();
             attr.setComplex(attrDMO.getComplex());
             attr.setRequired(attrDMO.getRequired());
             attr.setValue(null);

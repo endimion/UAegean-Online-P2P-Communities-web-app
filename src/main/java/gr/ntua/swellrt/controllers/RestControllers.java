@@ -8,8 +8,8 @@ package gr.ntua.swellrt.controllers;
 import gr.ntua.swellrt.model.dmo.AccountBuilder.SwellrtAccountMngDMO;
 import gr.ntua.swellrt.model.dmo.StrokAttributesMongoDMO;
 import gr.ntua.swellrt.pojo.ReceivedStorkAttribute;
-import gr.ntua.swellrt.pojo.StorkAttributeList;
-import gr.ntua.swellrt.pojo.StorkAttributeTemplate;
+import gr.ntua.swellrt.pojo.AttributeList;
+import gr.ntua.swellrt.pojo.AttributeTemplate;
 import gr.ntua.swellrt.pojo.StorkResponse;
 import gr.ntua.swellrt.pojo.ResponseForStork;
 import gr.ntua.swellrt.pojo.UserCredentials;
@@ -66,10 +66,14 @@ public class RestControllers {
 
     @RequestMapping("/attributeList")
     public @ResponseBody
-    StorkAttributeList getAttributeList() {
+    AttributeList getAttributeList() {
         return Wrappers.wrapStorkAttrMongoDMOtoStorkAttrTmpl(attributeService.getEnabledMng());
-//        List<StorkAttributesDMO> attrList = attrServ.getEnabled();
-//        return Wrappers.wrapStorkAttrDMOtoStorkAttrTmpl(attrList);
+    }
+
+    @RequestMapping("/attributeListEIDAS")
+    public @ResponseBody
+    AttributeList getAttributeListEIDAS() {
+        return Wrappers.wrapStorkAttrMongoDMOtoEidasAttrTmpl(attributeService.getEnabledMng());
     }
 
     @RequestMapping("/getToken")
@@ -85,7 +89,7 @@ public class RestControllers {
             @RequestParam(value = "t", required = false) String token) {
         try {
             StorkResponse response = new StorkResponse();
-            Map<String, StorkAttributeTemplate> receivedValues = AppUtils.parseStorkJSONResponse(responseString);
+            Map<String, AttributeTemplate> receivedValues = AppUtils.parseStorkJSONResponse(responseString);
             response.setReceivedAttributes(receivedValues);
             LOG.info("received the string: \n" + responseString);
             response.setToken(token);
@@ -159,7 +163,7 @@ public class RestControllers {
             @RequestParam(value = "t", required = false) String token) {
         try {
             StorkResponse response = new StorkResponse();
-            Map<String, StorkAttributeTemplate> receivedValues = AppUtils.parseStorkJSONResponse(responseString);
+            Map<String, AttributeTemplate> receivedValues = AppUtils.parseStorkJSONResponse(responseString);
             response.setReceivedAttributes(receivedValues);
             LOG.info("received the string: \n" + responseString);
             response.setToken(token);
@@ -191,7 +195,7 @@ public class RestControllers {
     ResponseForStork updateAttribute(HttpSession httpSession, @PathVariable String attr,
             @PathVariable String value, @PathVariable Optional<String> valueTail, HttpServletRequest request) {
 
-        if(valueTail.isPresent()){
+        if (valueTail.isPresent()) {
             value += "/" + valueTail.get();
         }
         Cookie[] cookies = request.getCookies();

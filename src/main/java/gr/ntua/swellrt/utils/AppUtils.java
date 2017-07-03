@@ -8,7 +8,7 @@ package gr.ntua.swellrt.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import gr.ntua.swellrt.pojo.StorkAttributeTemplate;
+import gr.ntua.swellrt.pojo.AttributeTemplate;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,10 +31,10 @@ public class AppUtils {
     private final static String UAGEANIDPATTERN = "^[a-z]{3}/\\d+";
     
 
-    public static Map<String, StorkAttributeTemplate> parseStorkJSONResponse(String jsonString) throws IOException {
+    public static Map<String, AttributeTemplate> parseStorkJSONResponse(String jsonString) throws IOException {
         ObjectMapper jmap = new ObjectMapper();
         TypeFactory typeFactory = jmap.getTypeFactory();
-        MapType mapType = typeFactory.constructMapType(HashMap.class, String.class, StorkAttributeTemplate.class);
+        MapType mapType = typeFactory.constructMapType(HashMap.class, String.class, AttributeTemplate.class);
         return jmap.readValue(jsonString, mapType);
     }
 

@@ -6,7 +6,7 @@
 package gr.ntua.swellrt.model.impl;
 
 import gr.ntua.swellrt.model.dao.StorkResponseDAO;
-import gr.ntua.swellrt.pojo.StorkAttributeTemplate;
+import gr.ntua.swellrt.pojo.AttributeTemplate;
 import gr.ntua.swellrt.pojo.StorkResponse;
 import java.io.BufferedReader;
 import java.io.File;
@@ -76,7 +76,7 @@ public class StorkResponseDAOImpl implements StorkResponseDAO {
                   if(lineSplit.length > 2 && lineSplit[0].equals(token)){
                       StorkResponse resp = new StorkResponse();
                       resp.setToken(lineSplit[0]);
-                      StorkAttributeTemplate eid = new StorkAttributeTemplate(lineSplit[1],0,1);
+                      AttributeTemplate eid = new AttributeTemplate(lineSplit[1],0,1);
                       resp.getReceivedAttributes().put("eIdentifier",eid);
                       resp.setTimestamp(lineSplit[2]);
                       matchingResponses.add(resp);

@@ -14,6 +14,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
         <title>Create a new account</title>
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
@@ -85,9 +90,12 @@
                             <select id="countrySelection" class="icons">
                                 <option value="" disabled selected></option>
                                 <c:forEach var="country" items="${countries}">
-                                    <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >
-                                        ${fn:toUpperCase(country.name)}
-                                    </option>
+                                    <c:if test = "${country.code == 'GR'}">
+                                        <option selected value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                    </c:if>
+                                    <c:if test = "${country.code != 'GR'}">
+                                        <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                    </c:if>
                                 </c:forEach>
                             </select>
                             <label>Select Your Country of Origin</label>
@@ -105,6 +113,14 @@
                         <div class="input-field col s12">
                             <input id="email2" type="email" class="validate">
                             <label for="email2">Retype Email</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <select id="typeOfLogin" class="icons">
+                                <option value="eIDAS"  selected>eIDAS</option>
+                                <option value="peps">PEPS</option>    
+                            </select>
+                            <label>Select means of identification </label>
                         </div>
 
                     </div>
@@ -150,7 +166,9 @@
 
                                 $(document).ready(function () {
                                     $('select').material_select();
-                                    $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
+                                    if (!$('#countrySelection').val()) {
+                                        $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
+                                    }
                                     $('#countrySelection').change(function () {
                                         if (this.vaue !== "") {
                                             $('#next').removeClass("disabled").addClass('waves-effect waves-light submit');
@@ -168,11 +186,18 @@
                                     let email2 = $("#email2").val();
 
                                     let country = $("#countrySelection").val();
-                                    let location = "https://stork-ap.aegean.gr:8443/ISSPlus/ValidateToken?t=${token}"
-                                            + "/"
-                                            + email
-                                            + "&sp=${sp}"
-                                            + "&cc=" + country;
+                                    let typeOfId = $('#typeOfLogin').val();
+                                    let location = "";
+                                    if (typeOfId === "eIDAS") {
+                                        location = "https://stork-ap.aegean.gr:8443/ISSPlus/ValidateToken?t=${token}"
+                                                + "&sp=${sp}&cc="
+                                                + country + "&saml=eIDAS"
+                                    } else {
+
+                                        location = "https://stork-ap.aegean.gr:8443/ISSPlus/ValidateToken?t=${token}"
+                                                + "&sp=${sp}"
+                                                + "&cc=" + country;
+                                    }
 
                                     if (email === email2) {
                                         if (email && validateEmail(email)) {

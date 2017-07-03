@@ -9,15 +9,15 @@ package gr.ntua.swellrt.pojo;
  *
  * @author nikos
  */
-public class StorkAttributeTemplate {
+public class AttributeTemplate {
 
         private String value;
         private int complex;
         private int required;
 
-        public StorkAttributeTemplate(){}
+        public AttributeTemplate(){}
         
-        public StorkAttributeTemplate(String value, int complex, int required) {
+        public AttributeTemplate(String value, int complex, int required) {
             this.value = value;
             this.complex = complex;
             this.required = required;
