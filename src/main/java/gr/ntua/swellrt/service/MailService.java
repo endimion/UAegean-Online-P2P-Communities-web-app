@@ -5,6 +5,8 @@
  */
 package gr.ntua.swellrt.service;
 
+import gr.ntua.swellrt.pojo.SwellrtEvent;
+
 
 /**
  *
@@ -13,5 +15,9 @@ package gr.ntua.swellrt.service;
 public interface MailService {
     
      
-    public void prepareAndSend(String recipient, String message, String userName);
+    public String prepareAndSend(String recipient, String message, String userName);
+    
+    public String sendEventMail(String recipient, SwellrtEvent evt);
+    
+    public String sendEmailsForEvent(SwellrtEvent evt);
 }

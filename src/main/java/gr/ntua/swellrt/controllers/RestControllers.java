@@ -12,6 +12,7 @@ import gr.ntua.swellrt.pojo.AttributeList;
 import gr.ntua.swellrt.pojo.AttributeTemplate;
 import gr.ntua.swellrt.pojo.StorkResponse;
 import gr.ntua.swellrt.pojo.ResponseForStork;
+import gr.ntua.swellrt.pojo.SwellrtEvent;
 import gr.ntua.swellrt.pojo.UserCredentials;
 import gr.ntua.swellrt.service.MailService;
 import gr.ntua.swellrt.service.StorkAttributeService;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,6 +41,7 @@ import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
@@ -173,8 +176,6 @@ public class RestControllers {
             LOG.info("received the string: \n" + responseString);
             response.setToken(token);
             String email = AppUtils.getEmailFromToken(token);
-//            StorkPersonMngDMO person = Wrappers.wrapStorkResponseToPersonDMO(response, attrServ);
-//            person.setEmail(email);
             SwellrtAccountMngDMO account = Wrappers.wrapStorkResponseToSwellrtAccount(response, attributeService);
             account.getHuman().setEmail(email);
             if (account.getLocalPassword() == null) {
@@ -244,5 +245,20 @@ public class RestControllers {
         }
         return new ResponseForStork(false);
     }
+    
+    
+     @RequestMapping(value = "/event", method = {RequestMethod.POST})
+    public @ResponseBody Callable<String> receiveEvent(@RequestBody SwellrtEvent event){
+        //for better scalability we return here a callable so that 
+        // the request thread will be freed imidiately (i.e. before the 
+        // response is sent, because the sending of emails is a time consuming task
+        // this makes the webapp require Servlet 3.0 container)
+        Callable<String> response = () -> mailserv.sendEmailsForEvent(event);
+        return response;
+    }
+    
+    
+    
+    
 
 }
