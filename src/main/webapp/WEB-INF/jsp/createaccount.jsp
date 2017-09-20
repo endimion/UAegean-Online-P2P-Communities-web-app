@@ -115,10 +115,10 @@
                             <label for="email2">Retype Email</label>
                         </div>
 
-                        <div class="input-field col s12">
-                            <select id="typeOfLogin" class="icons">
-                                <option value="eIDAS"  selected>eIDAS</option>
-                                <option value="peps">PEPS</option>    
+                        <div class="input-field col s12"  style="display:none">
+                            <select id="typeOfLogin" class="icons" >
+                                <option value="eIDAS"  >eIDAS</option>
+                                <option value="peps" selected>PEPS  </option>    
                             </select>
                             <label>Select means of identification </label>
                         </div>
@@ -181,7 +181,7 @@
 
 
                                 function onNextClick() {
-                                    let token = "${token}";
+                                    let token = "${token}" ;
                                     let email = $("#email").val();
                                     let email2 = $("#email2").val();
 
@@ -189,14 +189,14 @@
                                     let typeOfId = $('#typeOfLogin').val();
                                     let location = "";
                                     if (typeOfId === "eIDAS") {
-                                        location = "https://stork-ap.aegean.gr:8443/ISSPlus/ValidateToken?t=${token}"
+                                        location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}" + "/"+ email
                                                 + "&sp=${sp}&cc="
-                                                + country + "&saml=eIDAS"
+                                                + country + "&saml=eIDAS";
                                     } else {
 
-                                        location = "https://stork-ap.aegean.gr:8443/ISSPlus/ValidateToken?t=${token}"
+                                        location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}" + "/"+ email
                                                 + "&sp=${sp}"
-                                                + "&cc=" + country;
+                                                + "&cc="  + country + "&saml=eIDAS";
                                     }
 
                                     if (email === email2) {

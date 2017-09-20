@@ -194,11 +194,15 @@ public class Wrappers {
 
         List<ReceivedStorkAttribute> values = new ArrayList();
         response.getReceivedAttributes().forEach((k, v) -> {
-            StrokAttributesMongoDMO matchingAttribute = attrServ.findByNameMng(k);
+            log.info("Parsing attribute: " + k);
+
+            StrokAttributesMongoDMO matchingAttribute = attrServ.findByNameMng(k) != null
+                    ? attrServ.findByNameMng(k) : attrServ.findByEiDASNameMng(k);
             if (matchingAttribute != null) {
                 ReceivedStorkAttribute attr
                         = wrapStrokAttributesMngDMOtoReceivedStorkAttribute(matchingAttribute);
                 attr.setValue(v.getValue());
+                log.info("Value: " + v.getValue());
                 if (v.getComplex() == 1) {
                     try {
                         sb.setLength(0);
@@ -214,13 +218,13 @@ public class Wrappers {
                 values.add(attr);
             }
 
-            if (k.equals("eIdentifier")) {
+            if (k.equals("eIdentifier") || k.toLowerCase().equals("personidentifier")) {
                 builder.setEid(v.getValue());
             }
-            if (k.equals("givenName")) {
+            if (k.equals("givenName") || k.toLowerCase().equals("currentgivenname")) {
                 name.append(v.getValue());
             }
-            if (k.equals("surname")) {
+            if (k.equals("surname") || k.toLowerCase().equals("currentfamilyname")) {
                 surname.append(v.getValue());
             }
 
@@ -324,7 +328,18 @@ public class Wrappers {
             }
         });
 
-        user.setAttributes(attributes);
+        
+          user.setAttributes(attributes);
+        
+        if (account.getAttributes().get("FirstName") == null) {
+            user.getAttributes().put("FirstName", account.getAttributes().get("CurrentGivenName"));
+        }
+
+        if (account.getAttributes().get("FamilyName") == null) {
+            user.getAttributes().put("FamilyName", account.getAttributes().get("CurrentFamilyName"));
+        }
+
+      
         return addNotReceivedAttributesToCredentials(user, account, enabledAttributes);
     }
 

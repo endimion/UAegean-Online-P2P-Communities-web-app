@@ -64,7 +64,10 @@ public class Controllers {
         ModelAndView mv = new ModelAndView("login");
         UUID token = UUID.randomUUID();
         mv.addObject("token", token);
-        mv.addObject("sp", sp);
+//        mv.addObject("sp", sp);
+        // This was HardCoded to work with the eIDAS 1.2 node
+        // ISS only accepts 3 as the sp for teemz
+        mv.addObject("sp", "sp3");
         mv.addObject("countries", countriesService.findAll());
         LOG.info("Generated token " + token);
         LOG.info("IP " + request.getRemoteAddr());
@@ -90,7 +93,7 @@ public class Controllers {
         ModelAndView mv = new ModelAndView("createaccount");
         UUID token = UUID.randomUUID();
         mv.addObject("token", token);
-        mv.addObject("sp", sp);
+        mv.addObject("sp", "sp3");
         mv.addObject("countries", countriesService.findAll());
 
         LOG.info("Generated token " + token);

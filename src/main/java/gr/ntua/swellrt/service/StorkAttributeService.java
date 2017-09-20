@@ -14,10 +14,16 @@ import java.util.List;
  * @author nikos
  */
 public interface StorkAttributeService {
+
     public StorkAttributesDMO findByName(String name);
+
     public List<StorkAttributesDMO> getEnabled();
-    
+
     public List<StrokAttributesMongoDMO> getEnabledMng();
+
     public StrokAttributesMongoDMO save(StrokAttributesMongoDMO dmo);
+
     public StrokAttributesMongoDMO findByNameMng(String name);
+
+    public StrokAttributesMongoDMO findByEiDASNameMng(String name);
 }

@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface StorkAttributeMngRepository extends MongoRepository<StrokAttributesMongoDMO, Long>{
     
     public StrokAttributesMongoDMO findFirstByName(String name);
+    public StrokAttributesMongoDMO findFirstByEidasName(String eidasName);
     public List<StrokAttributesMongoDMO> findAll();
     public StrokAttributesMongoDMO save(StrokAttributesMongoDMO attribute);
      

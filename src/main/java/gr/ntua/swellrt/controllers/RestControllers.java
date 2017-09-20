@@ -67,14 +67,11 @@ public class RestControllers {
     @RequestMapping("/attributeList")
     public @ResponseBody
     AttributeList getAttributeList() {
-        return Wrappers.wrapStorkAttrMongoDMOtoStorkAttrTmpl(attributeService.getEnabledMng());
-    }
-
-    @RequestMapping("/attributeListEIDAS")
-    public @ResponseBody
-    AttributeList getAttributeListEIDAS() {
+//        return Wrappers.wrapStorkAttrMongoDMOtoStorkAttrTmpl(attributeService.getEnabledMng());
         return Wrappers.wrapStorkAttrMongoDMOtoEidasAttrTmpl(attributeService.getEnabledMng());
     }
+
+    
 
     @RequestMapping("/getToken")
     public @ResponseBody
@@ -99,10 +96,18 @@ public class RestControllers {
             if (!StringUtils.isEmpty(email)) {
                 account.getHuman().setEmail(email);
                 StringBuilder userNameBuilder = new StringBuilder();
-
-                userNameBuilder.append(account.getAttributes().get("FirstName").getValue())
+                
+                String firstName =account.getAttributes().get("FirstName")!= null?
+                            account.getAttributes().get("FirstName").getValue():
+                            account.getAttributes().get("CurrentGivenName").getValue();
+                
+                String lastName = account.getAttributes().get("FamilyName")!= null?
+                            account.getAttributes().get("FamilyName").getValue():
+                            account.getAttributes().get("CurrentFamilyName").getValue();
+                
+                userNameBuilder.append(firstName)
                         .append(" ")
-                        .append(account.getAttributes().get("FamilyName").getValue());
+                        .append(lastName);
 
                 mailserv.prepareAndSend(email, REGISTER_SUBJECT, userNameBuilder.toString());
             }

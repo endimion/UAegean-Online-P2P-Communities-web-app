@@ -46,7 +46,7 @@ public class StorkAttributeServiceImpl implements StorkAttributeService{
     @Transactional
     public List<StrokAttributesMongoDMO> getEnabledMng() {
         return attrRepo.findAll().stream().filter(attr ->{
-            return attr.isEnabled();
+            return attr.isEnabled() && attr.getRequired() == 1;
         }).collect(Collectors.toList());
     }
 
@@ -61,6 +61,9 @@ public class StorkAttributeServiceImpl implements StorkAttributeService{
        return attrRepo.findFirstByName(name);
     }
     
-    
+    @Override
+    public StrokAttributesMongoDMO findByEiDASNameMng(String name) {
+       return attrRepo.findFirstByEidasName(name);
+    }
     
 }
