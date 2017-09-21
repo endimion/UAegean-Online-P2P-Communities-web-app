@@ -42,6 +42,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  *
@@ -67,14 +68,14 @@ public class RestControllers {
     @Autowired
     private CacheManager cacheManager;
 
+    private final String token = "95901e5b61fd7c4f5f952927347f0994d0e22a3166bf7c90fb0287e8b87058fa";
+
     @RequestMapping("/attributeList")
     public @ResponseBody
     AttributeList getAttributeList() {
 //        return Wrappers.wrapStorkAttrMongoDMOtoStorkAttrTmpl(attributeService.getEnabledMng());
         return Wrappers.wrapStorkAttrMongoDMOtoEidasAttrTmpl(attributeService.getEnabledMng());
     }
-
-    
 
     @RequestMapping("/getToken")
     public @ResponseBody
@@ -99,15 +100,15 @@ public class RestControllers {
             if (!StringUtils.isEmpty(email)) {
                 account.getHuman().setEmail(email);
                 StringBuilder userNameBuilder = new StringBuilder();
-                
-                String firstName =account.getAttributes().get("FirstName")!= null?
-                            account.getAttributes().get("FirstName").getValue():
-                            account.getAttributes().get("CurrentGivenName").getValue();
-                
-                String lastName = account.getAttributes().get("FamilyName")!= null?
-                            account.getAttributes().get("FamilyName").getValue():
-                            account.getAttributes().get("CurrentFamilyName").getValue();
-                
+
+                String firstName = account.getAttributes().get("FirstName") != null
+                        ? account.getAttributes().get("FirstName").getValue()
+                        : account.getAttributes().get("CurrentGivenName").getValue();
+
+                String lastName = account.getAttributes().get("FamilyName") != null
+                        ? account.getAttributes().get("FamilyName").getValue()
+                        : account.getAttributes().get("CurrentFamilyName").getValue();
+
                 userNameBuilder.append(firstName)
                         .append(" ")
                         .append(lastName);
@@ -245,20 +246,23 @@ public class RestControllers {
         }
         return new ResponseForStork(false);
     }
-    
-    
-     @RequestMapping(value = "/event", method = {RequestMethod.POST})
-    public @ResponseBody Callable<String> receiveEvent(@RequestBody SwellrtEvent event){
+
+    @RequestMapping(value = "/event", method = {RequestMethod.POST})
+    public @ResponseBody
+    Callable<String> receiveEvent(@RequestHeader(value = "token", required = false) String token,
+            @RequestBody SwellrtEvent event) {
         //for better scalability we return here a callable so that 
         // the request thread will be freed imidiately (i.e. before the 
         // response is sent, because the sending of emails is a time consuming task
         // this makes the webapp require Servlet 3.0 container)
-        Callable<String> response = () -> mailserv.sendEmailsForEvent(event);
+        Callable<String> response = () -> {
+            if (token != null && token.equals(this.token)) {
+                return mailserv.sendEmailsForEvent(event);
+            } else {
+                return "Invalid token";
+            }
+        };
         return response;
     }
-    
-    
-    
-    
 
 }

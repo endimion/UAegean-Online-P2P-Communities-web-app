@@ -100,10 +100,6 @@ public class TestReceiveEventController {
 
     @Before
     public void setup() {
-//        Mockito.when(mailserv.prepareAndSend(any(String.class), any(String.class), any(String.class)))
-//                .thenReturn("OK");
-//        Mockito.when(mailserv.sendEventMail(any(String.class), any(SwellrtEvent.class)))
-//                .thenReturn("OK");
         Mockito.when(mailserv.sendEmailsForEvent(any(SwellrtEvent.class)))
                 .thenReturn("OK");
     }
@@ -116,7 +112,8 @@ public class TestReceiveEventController {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.restControllers).build();
         MvcResult result = mockMvc.perform(post("/event")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonInString))
+                .content(jsonInString)
+                .header("token", "95901e5b61fd7c4f5f952927347f0994d0e22a3166bf7c90fb0287e8b87058fa"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -131,7 +128,8 @@ public class TestReceiveEventController {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.restControllers).build();
         MvcResult asyncResult = mockMvc.perform(post("/event")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonInString))
+                .content(jsonInString)
+                .header("token", "95901e5b61fd7c4f5f952927347f0994d0e22a3166bf7c90fb0287e8b87058fa"))
                 .andExpect(request().asyncStarted())
                 .andExpect(request().asyncResult(instanceOf(String.class)))
                 .andReturn();
@@ -141,6 +139,51 @@ public class TestReceiveEventController {
 
         assertEquals(result.getResponse().getContentAsString(), "OK");
     }
+    
+    
+    
+     @Test
+    public void testReceiveEventWithRecipientsNoHeaderToken() throws Exception {
+        String jsonInString = "{\"path\":\"root.needs.12.completionDate\",  \"data\":{\"recipients\": [\"test@test.gr\",\"test2@test.gr\"],\"projId\":\"local.net/s+hqwFSt0sybA\",\"summaryText\":\"There are %n% notifications\",\"collapseKey\":\"applice\",\"context\":\"needs\",\"style\":\"inbox\",\"title\":\"Jewelry\",\"message\":\"✔ a task 9\",\"notId\":\"889303311\"},\"waveid\":\"local.net/s+hqwFSt0sybA\"} ";
+
+        assertEquals(true, true);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.restControllers).build();
+        MvcResult asyncResult = mockMvc.perform(post("/event")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonInString)
+                .header("token", "123"))
+                .andExpect(request().asyncStarted())
+                .andExpect(request().asyncResult(instanceOf(String.class)))
+                .andReturn();
+
+        MvcResult result = mockMvc.perform(asyncDispatch(asyncResult))
+                .andExpect(status().isOk()).andReturn();
+
+        assertEquals(result.getResponse().getContentAsString(), "Invalid token");
+    }
+    
+    
+     @Test
+    public void testReceiveEventWithRecipientsWrongHeaderToken() throws Exception {
+        String jsonInString = "{\"path\":\"root.needs.12.completionDate\",  \"data\":{\"recipients\": [\"test@test.gr\",\"test2@test.gr\"],\"projId\":\"local.net/s+hqwFSt0sybA\",\"summaryText\":\"There are %n% notifications\",\"collapseKey\":\"applice\",\"context\":\"needs\",\"style\":\"inbox\",\"title\":\"Jewelry\",\"message\":\"✔ a task 9\",\"notId\":\"889303311\"},\"waveid\":\"local.net/s+hqwFSt0sybA\"} ";
+
+        assertEquals(true, true);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.restControllers).build();
+        MvcResult asyncResult = mockMvc.perform(post("/event")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonInString))
+                .andExpect(request().asyncStarted())
+                .andExpect(request().asyncResult(instanceOf(String.class)))
+                .andReturn();
+
+        MvcResult result = mockMvc.perform(asyncDispatch(asyncResult))
+                .andExpect(status().isOk()).andReturn();
+
+        assertEquals(result.getResponse().getContentAsString(), "Invalid token");
+    }
+    
+    
+    
 
     @Test
     public void testReceiveEventErrorData() throws Exception {
