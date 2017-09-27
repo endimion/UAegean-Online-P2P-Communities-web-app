@@ -46,7 +46,7 @@ public class StorkAttributeServiceImpl implements StorkAttributeService{
     @Transactional
     public List<StrokAttributesMongoDMO> getEnabledMng() {
         return attrRepo.findAll().stream().filter(attr ->{
-            return attr.isEnabled() && attr.getRequired() == 1;
+            return attr.isEnabled() ;
         }).collect(Collectors.toList());
     }
 

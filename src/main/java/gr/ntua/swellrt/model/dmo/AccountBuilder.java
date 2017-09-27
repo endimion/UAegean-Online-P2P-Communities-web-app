@@ -19,8 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 public class AccountBuilder {
 
-    
-
     public static class Human {
 
         private PasswordDigest passwordDigest;
@@ -64,13 +62,14 @@ public class AccountBuilder {
         private String eid;
         private String openPassword;
         private Map<String, ReceivedStorkAttribute> attributes;
-        
-        public SwellrtAccountMngDMO(){}
+
+        public SwellrtAccountMngDMO() {
+        }
 
         private SwellrtAccountMngDMO(AccountBuilder builder) {
             Human h = new Human();
             PasswordDigest pd = new PasswordDigest(builder.getPassword().toLowerCase()
-                                                    .toCharArray());
+                    .toCharArray());
             h.setPasswordDigest(pd);
             h.setEmail(builder.getEmail());
             h.setLocale("en_us");
@@ -80,12 +79,17 @@ public class AccountBuilder {
             this.attributes = new HashMap();
             this.timestamp = builder.getTimestamp();
             builder.getAttributes().stream().forEach(attribute -> {
-                if(attribute.geteIDASName() != null){
-                    attributes.put(attribute.geteIDASName(), attribute);
-                }else{
+                if (attribute.geteIDASName() != null) {
+                    String attributeName = attribute.geteIDASName()
+                            .replace("http://eidas.europa.eu/attributes/naturalperson/representative/", "")
+                            .replace("http://eidas.europa.eu/attributes/legalperson/representative/", "")
+                            .replace("http://eidas.europa.eu/attributes/naturalperson/", "")
+                            .replace("http://eidas.europa.eu/attributes/legalperson/", "");
+                    attributes.put(attributeName, attribute);
+                } else {
                     attributes.put(attribute.getStorkName(), attribute);
                 }
-                
+
             });
             this.id = builder.getUsername().toLowerCase() + "@local.net";
             this.eid = builder.getEid();
@@ -155,13 +159,12 @@ public class AccountBuilder {
         public void setOpenPassword(String openPassword) {
             this.openPassword = openPassword;
         }
-        
-        
+
     }
 
     private String id;
 //    private Human human;
-    
+
     private String username;
     private String token;
     private String localPassword;
@@ -172,7 +175,7 @@ public class AccountBuilder {
     private String email;
     private String locale;
     private String eid;
-    
+
     public String getId() {
         return id;
     }
@@ -181,7 +184,6 @@ public class AccountBuilder {
         this.id = id;
     }
 
-    
     public String getToken() {
         return token;
     }
@@ -265,6 +267,5 @@ public class AccountBuilder {
     public void setOpenPassword(String openPassword) {
         this.openPassword = openPassword;
     }
-    
-    
+
 }

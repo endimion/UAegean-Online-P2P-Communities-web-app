@@ -218,13 +218,13 @@ public class Wrappers {
                 values.add(attr);
             }
 
-            if (k.equals("eIdentifier") || k.toLowerCase().equals("personidentifier")) {
+            if (k.equals("eIdentifier") || k.toLowerCase().contains("personidentifier")) {
                 builder.setEid(v.getValue());
             }
-            if (k.equals("givenName") || k.toLowerCase().equals("currentgivenname")) {
+            if (k.equals("givenName") || k.toLowerCase().contains("currentgivenname")) {
                 name.append(v.getValue());
             }
-            if (k.equals("surname") || k.toLowerCase().equals("currentfamilyname")) {
+            if (k.equals("surname") || k.toLowerCase().contains("currentfamilyname")) {
                 surname.append(v.getValue());
             }
 
