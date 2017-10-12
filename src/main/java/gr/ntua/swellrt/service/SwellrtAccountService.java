@@ -20,4 +20,5 @@ public interface SwellrtAccountService {
     public SwellrtAccountMngDMO findByToken(String token);
 
     public SwellrtAccountMngDMO findByEid(String eid);
+    public SwellrtAccountMngDMO findById(String id);
 }

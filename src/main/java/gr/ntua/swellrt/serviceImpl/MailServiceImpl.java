@@ -91,13 +91,14 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public String sendEmailsForEvent(SwellrtEvent event) {
+    public String sendEmailsForEvent(SwellrtEvent event, List<String> participants) {
         final StringBuilder response = new StringBuilder();
-
-        if (event != null && event.getData() != null && event.getData().getRecipients() != null) {
-            List<String> recipients = event.getData().getRecipients();
-            if (recipients.size() > 0) {
-                recipients.stream().forEach(email -> {
+        log.info("Will send event " + event.getData().getMessage());
+        log.info("To " + participants.size() + " persons");
+        if (event != null && event.getData() != null) {
+            if (participants.size() > 0) {
+                participants.stream().forEach(email -> {
+                    log.info("Sending mail to " + email);
                     response.setLength(0);
                     response.append(sendEventMail(email, event));
                 });

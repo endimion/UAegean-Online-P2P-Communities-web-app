@@ -147,6 +147,11 @@ public class SwellrtAccountServiceImpl implements SwellrtAccountService {
         
         return newAccount;
     }
+
+    @Override
+    public SwellrtAccountMngDMO findById(String id) {
+        return accountRepo.findById(id);
+    }
     
 
 }

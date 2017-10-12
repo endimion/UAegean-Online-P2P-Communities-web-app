@@ -6,11 +6,15 @@
 package gr.ntua.swellrt.testControllers;
 
 import gr.ntua.swellrt.controllers.RestControllers;
+import gr.ntua.swellrt.model.dmo.TeemProject;
 import gr.ntua.swellrt.pojo.SwellrtEvent;
 import gr.ntua.swellrt.service.MailService;
 import gr.ntua.swellrt.service.StorkAttributeService;
 import gr.ntua.swellrt.service.SwellrtAccountService;
+import gr.ntua.swellrt.service.TeemProjectService;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
@@ -70,6 +74,12 @@ public class TestReceiveEventController {
             return new RestControllers();
         }
 
+        
+          @Bean 
+        public TeemProjectService projectServ(){
+            return Mockito.mock(TeemProjectService.class);
+        }
+        
         @Bean
         public CacheManager cacheManager() {
             return new CacheManager() {
@@ -97,11 +107,23 @@ public class TestReceiveEventController {
 
     @Autowired
     private StorkAttributeService attrserv;
+    
+    @Autowired
+    private TeemProjectService projServ;
 
     @Before
     public void setup() {
-        Mockito.when(mailserv.sendEmailsForEvent(any(SwellrtEvent.class)))
+        Mockito.when(mailserv.sendEmailsForEvent(any(SwellrtEvent.class),any(List.class)))
                 .thenReturn("OK");
+        
+        TeemProject  proj = new TeemProject();
+        proj.setId("id");
+        proj.setParticipants(new ArrayList());
+        proj.setWaveId("waveid");
+        proj.setWaveletId("weabelt");
+        
+        Mockito.when(projServ.findByWave_id(any(String.class)))
+                .thenReturn(proj);
     }
 
     @Test

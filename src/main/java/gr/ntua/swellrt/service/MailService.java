@@ -6,6 +6,7 @@
 package gr.ntua.swellrt.service;
 
 import gr.ntua.swellrt.pojo.SwellrtEvent;
+import java.util.List;
 
 
 /**
@@ -19,5 +20,5 @@ public interface MailService {
     
     public String sendEventMail(String recipient, SwellrtEvent evt);
     
-    public String sendEmailsForEvent(SwellrtEvent evt);
+    public String sendEmailsForEvent(SwellrtEvent evt, List<String> participants);
 }

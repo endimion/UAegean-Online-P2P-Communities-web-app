@@ -16,4 +16,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface SwellrtAccountRepository extends MongoRepository<SwellrtAccountMngDMO,Long>{
     public SwellrtAccountMngDMO findByToken(String token);
     public SwellrtAccountMngDMO findByEid(String eid);
+    public SwellrtAccountMngDMO findById(String id);
 }

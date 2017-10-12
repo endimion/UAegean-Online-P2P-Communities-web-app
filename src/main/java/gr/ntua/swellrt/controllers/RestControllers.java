@@ -17,6 +17,7 @@ import gr.ntua.swellrt.pojo.UserCredentials;
 import gr.ntua.swellrt.service.MailService;
 import gr.ntua.swellrt.service.StorkAttributeService;
 import gr.ntua.swellrt.service.SwellrtAccountService;
+import gr.ntua.swellrt.service.TeemProjectService;
 import gr.ntua.swellrt.utils.AppUtils;
 import gr.ntua.swellrt.utils.Wrappers;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,6 +70,9 @@ public class RestControllers {
     @Autowired
     private CacheManager cacheManager;
 
+    @Autowired
+    private TeemProjectService projectServ;
+
     private final String token = "95901e5b61fd7c4f5f952927347f0994d0e22a3166bf7c90fb0287e8b87058fa";
 
     @RequestMapping("/attributeList")
@@ -93,6 +98,12 @@ public class RestControllers {
             Map<String, AttributeTemplate> receivedValues = AppUtils.parseStorkJSONResponse(responseString);
             response.setReceivedAttributes(receivedValues);
             LOG.info("received the string: \n" + responseString);
+            if (responseString.trim().equals("{}") || StringUtils.isEmpty(responseString.trim())) {
+                LOG.info("Empty Response");
+                return new ResponseForStork(false);
+            } else {
+                LOG.info("Response is not empty: " + responseString + "!!!");
+            }
             response.setToken(token);
             String email = AppUtils.getEmailFromToken(token);
 
@@ -175,6 +186,12 @@ public class RestControllers {
             Map<String, AttributeTemplate> receivedValues = AppUtils.parseStorkJSONResponse(responseString);
             response.setReceivedAttributes(receivedValues);
             LOG.info("received the string: \n" + responseString);
+            if (responseString.trim().equals("{}") || StringUtils.isEmpty(responseString.trim())) {
+                LOG.info("Empty Response");
+                return new ResponseForStork(false);
+            } else {
+                LOG.info("Response is not empty: " + responseString + "!!!");
+            }
             response.setToken(token);
             String email = AppUtils.getEmailFromToken(token);
             SwellrtAccountMngDMO account = Wrappers.wrapStorkResponseToSwellrtAccount(response, attributeService);
@@ -182,6 +199,7 @@ public class RestControllers {
             if (account.getLocalPassword() == null) {
                 account.setLocalPassword("");
             }
+
             accountService.saveOrUpdate(account);
             StringBuilder userNameBuilder = new StringBuilder();
             userNameBuilder.append(account.getAttributes().get("FirstName").getValue())
@@ -256,8 +274,25 @@ public class RestControllers {
         // response is sent, because the sending of emails is a time consuming task
         // this makes the webapp require Servlet 3.0 container)
         Callable<String> response = () -> {
+            LOG.info("Got event token " + token);
+            LOG.info("Event " + event.getWaveid());
             if (token != null && token.equals(this.token)) {
-                return mailserv.sendEmailsForEvent(event);
+                if (event != null && event.getWaveid() != null) {
+                    List<String> participants = projectServ.findByWave_id(event.getWaveid())
+                            .getParticipants().stream()
+                            .map(id -> {
+                                LOG.info("Searching by ID " + id);
+                                return accountService.findById(id);
+                            }).filter(account -> {
+                        return account != null;
+                    }).map(account -> {
+                        LOG.info("Email  " + account.getHuman().getEmail());
+                        return account.getHuman().getEmail();
+                    }).collect(Collectors.toList());
+                    return mailserv.sendEmailsForEvent(event, participants);
+                }
+                return "no participants found for project" + event.getWaveid();
+
             } else {
                 return "Invalid token";
             }

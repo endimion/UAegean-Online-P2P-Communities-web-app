@@ -10,7 +10,9 @@ import gr.ntua.swellrt.pojo.SwellrtEvent;
 import gr.ntua.swellrt.service.MailService;
 import gr.ntua.swellrt.service.StorkAttributeService;
 import gr.ntua.swellrt.service.SwellrtAccountService;
+import gr.ntua.swellrt.service.TeemProjectService;
 import java.util.Collection;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -61,6 +63,11 @@ public class TestGetCredentials {
             return Mockito.mock(SwellrtAccountService.class);
         }
 
+        @Bean 
+        public TeemProjectService projectServ(){
+            return Mockito.mock(TeemProjectService.class);
+        }
+        
         @Bean
         public RestControllers restControllers() {
             return new RestControllers();
@@ -71,7 +78,7 @@ public class TestGetCredentials {
             return new CacheManager() {
                 @Override
                 public Cache getCache(String name) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    return Mockito.mock(Cache.class);
                 }
 
                 @Override
@@ -103,7 +110,7 @@ public class TestGetCredentials {
     
     @Before
     public void setup() {
-        Mockito.when(mailserv.sendEmailsForEvent(any(SwellrtEvent.class)))
+        Mockito.when(mailserv.sendEmailsForEvent(any(SwellrtEvent.class), any(List.class)))
                 .thenReturn("OK");
         mockWrapper = Mockito.mock(ValueWrapper.class);
         request.addHeader(HttpHeaders.HOST, "myhost.com");
