@@ -21,7 +21,7 @@
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/${css}">
 
 
         <!- Overide the sidebar css -->
@@ -154,14 +154,14 @@
                                         let typeOfId = $('#typeOfLogin').val();
                                         let location = "";
                                         if (typeOfId === "eIDAS") {
-                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
-                                                    + "&sp=${sp}&cc="
-                                                    + country + "&saml=eIDAS";
-                                        } else {
-
-                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
+//                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
+                                              location = "${node}" + "?t=${token}"
                                                     + "&sp=${sp}"
-                                                    + "&cc=" + country + "&saml=eIDAS";
+                                                    + "&cc="  + country + "&saml=${samlType}";
+                                        } else {
+                                              location = "${node}" + "?t=${token}"
+                                                    + "&sp=${sp}"
+                                                    + "&cc="  + country + "&saml=${samlType}";
                                         }
                                         window.location = location;
 

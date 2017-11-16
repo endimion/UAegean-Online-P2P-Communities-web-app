@@ -13,7 +13,7 @@
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/${css}">
     
         <!- Overide the sidebar css -->
         <style>
@@ -77,7 +77,7 @@
         <script>
             function onHomeClick() {
                 let token = "${token}";
-                window.location = "http://community.mastihawonder.com/";
+                window.location = "${server}"; //"http://community.mastihawonder.com/";
             }
         </script>
         <!--Import jQuery before materialize.js-->

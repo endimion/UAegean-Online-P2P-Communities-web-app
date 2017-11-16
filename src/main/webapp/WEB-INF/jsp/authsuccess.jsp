@@ -13,7 +13,7 @@
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="css/main.css"> 
+        <link rel="stylesheet" href="css/${css}"> 
     </head>
     <body>
         
@@ -74,7 +74,7 @@
             $("#message").html("connecting to service...");
             SwellRT.ready(function () {
                 $("#message").html("processing request...");
-                window.location = "//community.mastihawonder.com/eID/"
+                window.location = "//${server}/eID/"
                         + getParameterByName("t");
             });
         });

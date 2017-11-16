@@ -8,7 +8,7 @@
     <!--<div class="container">-->
         <div class=" instructions">
             <div class="col s12 m12 l12 " id="header-logo">
-                 <img class="responsive-img" src="img/app-logo.png" style="max-height:100px;">
+                 <img class="responsive-img" src="img/${logo}" style="max-height:100px;">
             </div>
         </div>
     <!--</div>-->

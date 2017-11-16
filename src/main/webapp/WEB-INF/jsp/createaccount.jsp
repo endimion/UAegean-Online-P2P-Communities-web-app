@@ -25,7 +25,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/${css}">
 
         <style>
             #toast-container {
@@ -181,7 +181,7 @@
 
 
                                 function onNextClick() {
-                                    let token = "${token}" ;
+                                    let token = "${token}";
                                     let email = $("#email").val();
                                     let email2 = $("#email2").val();
 
@@ -189,14 +189,16 @@
                                     let typeOfId = $('#typeOfLogin').val();
                                     let location = "";
                                     if (typeOfId === "eIDAS") {
-                                        location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}" + "/"+ email
-                                                + "&sp=${sp}&cc="
-                                                + country + "&saml=eIDAS";
+//                                        location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}" + "/"+ email
+                                        location = "${node}" + "?t=${token}" + "/" + email
+                                                + "&sp=${sp}"
+                                                + "&cc=" + country + "&saml=${samlType}";
                                     } else {
 
-                                        location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}" + "/"+ email
+//                                        location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}" + "/"+ email
+                                        location = "${node}" + "?t=${token}" + "/" + email
                                                 + "&sp=${sp}"
-                                                + "&cc="  + country + "&saml=eIDAS";
+                                                + "&cc=" + country + "&saml=${samlType}";
                                     }
 
                                     if (email === email2) {
