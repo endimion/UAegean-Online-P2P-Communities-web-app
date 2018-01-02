@@ -5,6 +5,7 @@
  */
 package teem.loginapp.controllers;
 
+import java.io.IOException;
 import teem.loginapp.model.dmo.AccountBuilder.SwellrtAccountMngDMO;
 import teem.loginapp.model.dmo.StrokAttributesMongoDMO;
 import teem.loginapp.pojo.ReceivedStorkAttribute;
@@ -45,7 +46,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import teem.loginapp.pojo.IssErrorResponse;
 import teem.loginapp.service.PropertiesService;
+import teem.loginapp.utils.IssErrorMapper;
 
 /**
  *
@@ -105,12 +108,21 @@ public class RestControllers {
             Map<String, AttributeTemplate> receivedValues = AppUtils.parseStorkJSONResponse(responseString);
             response.setReceivedAttributes(receivedValues);
             LOG.info("received the string: \n" + responseString);
-            if (responseString.trim().equals("{}") || StringUtils.isEmpty(responseString.trim())) {
-                LOG.info("Empty Response");
+            
+            if (responseString.trim().equals("{}") || StringUtils.isEmpty(responseString.trim()) ||
+                 (responseString.contains("StatusCode") && responseString.contains("StatusMessage"))  ) {
+                LOG.info("Error Response");
+                if( responseString.contains("StatusCode") && responseString.contains("StatusMessage")){
+                    IssErrorResponse err = IssErrorMapper.wrapErrorToObject(responseString);
+                    LOG.info("Error Message: " + err.getStatusMessage());
+                    LOG.info("Error Code: " + err.getStatusCode());
+                }else{
+                    LOG.info("empry response!!!");
+                }    
                 return new ResponseForStork(false);
-            } else {
-                LOG.info("Response is not empty: " + responseString + "!!!");
             }
+            
+            
             response.setToken(token);
             String email = AppUtils.getEmailFromToken(token);
 
@@ -145,7 +157,7 @@ public class RestControllers {
             accountService.saveOrUpdate(account);
 
             return new ResponseForStork(true);
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOG.error("Error parsing JSON", e);
             return new ResponseForStork(false);
         }
