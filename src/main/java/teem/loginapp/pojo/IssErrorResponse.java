@@ -15,36 +15,69 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class IssErrorResponse {
     
     
-    private String statusCode;
-    private String statusMessage;
+    private IssAttribute statusCode;
+    private IssAttribute statusMessage;
 
     public IssErrorResponse(){
     
     }
-//    
-//    public IssErrorResponse(String statusCode, String statusMessage){
-//        this.statusCode = statusCode;
-//        this.statusMessage = statusMessage;
-//    }
     
     @JsonGetter("StatusCode")
-    public String getStatusCode() {
+    public IssAttribute getStatusCode() {
         return statusCode;
     }
 
     @JsonSetter("StatusCode")
-    public void setStatusCode(String StatusCode) {
+    public void setStatusCode(IssAttribute StatusCode) {
         this.statusCode = StatusCode;
     }
 
     @JsonGetter("StatusMessage")
-    public String getStatusMessage() {
+    public IssAttribute getStatusMessage() {
         return statusMessage;
     }
 
     @JsonSetter("StatusMessage")
-    public void setStatusMessage(String StatusMessage) {
+    public void setStatusMessage(IssAttribute StatusMessage) {
         this.statusMessage = StatusMessage;
+    }
+    
+    
+    
+    
+    
+    public class IssAttribute{
+        private String value;
+        private String complex;
+        private String required;
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getComplex() {
+            return complex;
+        }
+
+        public void setComplex(String complex) {
+            this.complex = complex;
+        }
+
+        public String getRequired() {
+            return required;
+        }
+
+        public void setRequired(String required) {
+            this.required = required;
+        }
+        
+        
+    
+    
     }
     
     

@@ -19,10 +19,10 @@ public class TestIssErrorMapper {
     
     @Test
     public void testErrorFormatOk() throws IOException{
-        String resp = "{\"StatusCode\": \"1\", \"StatusMessage\": \"message\"}";
+        String resp = "{\"StatusCode\":{\"value\":\"urn%58oasis%58names%58tc%58SAML%582.0%58status%58Requester\",\"complex\":\"0\",\"required\":\"0\"},\"StatusMessage\":{\"value\":\"202007 - Consent not given for a mandatory attribute.\",\"complex\":\"0\",\"required\":\"0\"}}";
         IssErrorResponse err =  IssErrorMapper.wrapErrorToObject(resp);
-        assertEquals(err.getStatusCode(),"1");
-        assertEquals(err.getStatusMessage(),"message");
+        assertEquals(err.getStatusCode().getValue(),"urn%58oasis%58names%58tc%58SAML%582.0%58status%58Requester");
+        assertEquals(err.getStatusMessage().getValue(),"202007 - Consent not given for a mandatory attribute.");
     }
 
     @Test(expected = IOException.class)

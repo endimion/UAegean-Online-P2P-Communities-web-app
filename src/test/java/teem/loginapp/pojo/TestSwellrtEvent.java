@@ -5,7 +5,6 @@
  */
 package teem.loginapp.pojo;
 
-import teem.loginapp.pojo.SwellrtEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import static org.junit.Assert.assertEquals;

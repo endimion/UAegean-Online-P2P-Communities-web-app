@@ -114,8 +114,8 @@ public class RestControllers {
                 LOG.info("Error Response");
                 if( responseString.contains("StatusCode") && responseString.contains("StatusMessage")){
                     IssErrorResponse err = IssErrorMapper.wrapErrorToObject(responseString);
-                    LOG.info("Error Message: " + err.getStatusMessage());
-                    LOG.info("Error Code: " + err.getStatusCode());
+                    LOG.info("Error Message: " + err.getStatusMessage().getValue());
+                    LOG.info("Error Code: " + err.getStatusCode().getValue());
                 }else{
                     LOG.info("empry response!!!");
                 }    
