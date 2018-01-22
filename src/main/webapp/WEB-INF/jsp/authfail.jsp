@@ -48,10 +48,9 @@
                                 Please go to the starting page and reauthorize the application, using the eIDAS system
                             </div>
                             <div class="col s12 hide-on-med-and-down ">
-                                Error processing request. <br>
-                                The token you provided is not valid!<br>
-
-                                Please go to the starting page and reauthorize the application, using the eIDAS system
+                                <h4>Error processing request.</h4>
+                                An error occurred during the authentication process!<br>
+                                Please, return to the home page and reauthorize the application, using the eIDAS system.
                             </div>
                         </div>
                         <div class="row">
@@ -77,8 +76,8 @@
         <script>
             function onHomeClick() {
                 let token = "${token}";
-                window.location = "${server}"; //"http://community.mastihawonder.com/";
-            }
+                window.location = "http://${server}"; // "http://community.mastihawonder.com/";
+            }//
         </script>
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

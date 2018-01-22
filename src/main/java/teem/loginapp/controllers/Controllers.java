@@ -10,8 +10,6 @@ import java.io.IOException;
 import teem.loginapp.model.dmo.AccountBuilder;
 import teem.loginapp.service.CountriesService;
 import teem.loginapp.service.SwellrtAccountService;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

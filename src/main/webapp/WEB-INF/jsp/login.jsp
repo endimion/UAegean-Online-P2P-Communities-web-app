@@ -60,20 +60,26 @@
 
                         <div class="row instructions">
                             <div  class="col s12 flow-text hide-on-large-only">
-                                By clicking next you will be transfered to the,eIDAS  system to securely authenticate with this application. <br> 
+                                <p>By clicking next you will be transfered to the, eIDAS  system to securely authenticate with this application. <br> 
+                                </p>
+                                <p>
                                 Please recall, that using the eIDAS system you trustly provide us your identity attributes such as name, address,
                                 etc. <br>
-                                eIDAS will provide us with those attributes from the attribute providers you suggest
-                                eIDAS will request your consent before sending us any information <br>
-                                After authorization you will be redirected to our service<br>
+                                eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
+                                eIDAS will request your consent before sending us any information. <br></p>
+                                
+                                After authorization you will be redirected to our service.<br>
                             </div>
                             <div  class="col s12  hide-on-med-and-down ">
-                                By clicking next you will be transfered to the,eIDAS  system to securely authenticate with this application. <br> 
+                                <p>By clicking next you will be transfered to the, eIDAS  system to securely authenticate with this application. <br> 
+                                </p>
+                                <p>
                                 Please recall, that using the eIDAS system you trustly provide us your identity attributes such as name, address,
                                 etc. <br>
-                                eIDAS will provide us with those attributes from the attribute providers you suggest
-                                eIDAS will request your consent before sending us any information <br>
-                                After authorization you will be redirected to our service<br>
+                                eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
+                                eIDAS will request your consent before sending us any information. <br></p>
+                                
+                                After authorization you will be redirected to our service.<br>
                             </div>
                         </div>
 
