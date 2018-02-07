@@ -328,9 +328,8 @@ public class Wrappers {
             }
         });
 
-        
-          user.setAttributes(attributes);
-        
+        user.setAttributes(attributes);
+
         if (account.getAttributes().get("FirstName") == null) {
             user.getAttributes().put("FirstName", account.getAttributes().get("CurrentGivenName"));
         }
@@ -339,7 +338,6 @@ public class Wrappers {
             user.getAttributes().put("FamilyName", account.getAttributes().get("CurrentFamilyName"));
         }
 
-      
         return addNotReceivedAttributesToCredentials(user, account, enabledAttributes);
     }
 

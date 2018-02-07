@@ -9,48 +9,51 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
         <title>Authentication failed</title>
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/${css}">
-    
+
         <!- Overide the sidebar css -->
         <style>
             .sideBarClass{
-                   margin-top: 0;
+                margin-top: 0;
             }
-            
+
         </style>
-    
-    
+
+
     </head>
     <body>
 
-        
-            <div  >
-                <%@ include file="/WEB-INF/jsp/header.jsp" %>
-            </div>
-            <div class="container"> 
-            <div class="row breadCrumbs">
-                STEP | <b>RETURN</b>
-            </div>
+
+        <div  >
+            <%@ include file="/WEB-INF/jsp/header.jsp" %>
+        </div>
+        <div class="container"> 
 
 
             <div class="row  mainContent">
                 <div class="col s12 m12 l8">
+
+                    <div class="row breadCrumbs">
+                        STEP | <b>RETURN</b>
+                    </div>
                     <div class="container">
                         <div class="row instructions">
                             <div class="col s12 flow-text hide-on-large-only">
-                                Error processing request. <br>
-                                The token you provided is not valid!<br>
-
-                                Please go to the starting page and reauthorize the application, using the eIDAS system
+                                <h4>Error processing request.</h4>
+                                ${errorMsg}
                             </div>
                             <div class="col s12 hide-on-med-and-down ">
                                 <h4>Error processing request.</h4>
-                                An error occurred during the authentication process!<br>
-                                Please, return to the home page and reauthorize the application, using the eIDAS system.
+                                ${errorMsg}
                             </div>
                         </div>
                         <div class="row">
@@ -71,8 +74,8 @@
             <div class="row">
                 <%@ include file="/WEB-INF/jsp/footer.jsp" %>
             </div>
-            </div>
-       
+        </div>
+
         <script>
             function onHomeClick() {
                 let token = "${token}";

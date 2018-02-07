@@ -40,6 +40,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -82,6 +83,18 @@ public class RestControllers {
 
     private final String token = "95901e5b61fd7c4f5f952927347f0994d0e22a3166bf7c90fb0287e8b87058fa";
 
+    @Value("${eidas.error.connection}")
+    private String EIDAS_CON_ERROR;
+
+    @Value("${eidas.error.consent}")
+    private String EIDAS_CONSENT_ERROR;
+
+    @Value("${eidas.error.qaa}")
+    private String EIDAS_QAA_ERROR;
+
+    @Value("${eidas.error.missing}")
+    private String EIDAS_MISSING_ATTRIBUTE_ERROR;
+
     @RequestMapping("/attributeList")
     public @ResponseBody
     AttributeList getAttributeList() {
@@ -108,21 +121,38 @@ public class RestControllers {
             Map<String, AttributeTemplate> receivedValues = AppUtils.parseStorkJSONResponse(responseString);
             response.setReceivedAttributes(receivedValues);
             LOG.info("received the string: \n" + responseString);
-            
-            if (responseString.trim().equals("{}") || StringUtils.isEmpty(responseString.trim()) ||
-                 (responseString.contains("StatusCode") && responseString.contains("StatusMessage"))  ) {
-                LOG.info("Error Response");
-                if( responseString.contains("StatusCode") && responseString.contains("StatusMessage")){
+
+            if (responseString.trim().equals("{}") || StringUtils.isEmpty(responseString.trim())
+                    || (responseString.contains("StatusCode") && responseString.contains("StatusMessage"))) {
+//                LOG.info("Error Response");
+                if (responseString.contains("StatusCode") && responseString.contains("StatusMessage")) {
                     IssErrorResponse err = IssErrorMapper.wrapErrorToObject(responseString);
-                    LOG.info("Error Message: " + err.getStatusMessage().getValue());
-                    LOG.info("Error Code: " + err.getStatusCode().getValue());
-                }else{
+//                    LOG.info("Error Message: " + err.getStatusMessage().getValue());
+//                    LOG.info("Error Code: " + err.getStatusCode().getValue());
+
+                    if (err.getStatusCode().getValue().contains("202002") || err.getStatusCode().getValue().contains("202003")
+                            || err.getStatusCode().getValue().contains("202005") || err.getStatusCode().getValue().contains("202011")
+                            || err.getStatusCode().getValue().contains("202013") || err.getStatusCode().getValue().contains("202015")
+                            || err.getStatusCode().getValue().contains("202016") || err.getStatusCode().getValue().contains("202017")) {
+
+                        cacheManager.getCache("errors").put(token, EIDAS_CON_ERROR);
+                    }
+                    if (err.getStatusCode().getValue().contains("202007") || err.getStatusCode().getValue().contains("202012")) {
+                        cacheManager.getCache("errors").put(token, EIDAS_CONSENT_ERROR);
+                    }
+                    if (err.getStatusCode().getValue().contains("202004")) {
+                        cacheManager.getCache("errors").put(token, EIDAS_QAA_ERROR);
+                    }
+                    if (err.getStatusCode().getValue().contains("202010")) {
+                        cacheManager.getCache("errors").put(token, EIDAS_MISSING_ATTRIBUTE_ERROR);
+                    }
+
+                } else {
                     LOG.info("empry response!!!");
-                }    
+                }
                 return new ResponseForStork(false);
             }
-            
-            
+
             response.setToken(token);
             String email = AppUtils.getEmailFromToken(token);
 
@@ -144,9 +174,9 @@ public class RestControllers {
                         .append(lastName);
 
                 mailserv.prepareAndSend(email, REGISTER_SUBJECT, userNameBuilder.toString());
-            }else{
+            } else {
                 //if no email is found then the user must allready be registed!
-                if (accountService.findByEid(account.getEid()) == null){
+                if (accountService.findByEid(account.getEid()) == null) {
                     return new ResponseForStork(false);
                 }
             }
@@ -187,7 +217,13 @@ public class RestControllers {
         if (account != null) {
             if (AppUtils.checkIfValidTimestamp(account.getTimestamp())) {
                 List<StrokAttributesMongoDMO> enabledAttributesList = attributeService.getEnabledMng();
-                return Wrappers.wrapSwellrtAccounttoUserCredentials(account, enabledAttributesList);
+                UserCredentials res = Wrappers.wrapSwellrtAccounttoUserCredentials(account, enabledAttributesList);
+                    
+                res.setAttributes(res.getAttributes().entrySet().stream().filter(p ->{
+                    return !p.getKey().contains("http");
+                }).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
+                return res;
+
             } else {
                 creds.setStatus("TOKEN_EXPIRED");
                 return creds;
@@ -197,7 +233,6 @@ public class RestControllers {
         creds.setStatus("NO_USER_FOUND_FOR_TOKEN");
         return creds;
     }
-
 
     @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.PUT, RequestMethod.POST})
     @RequestMapping(value = {"/updateAttribute/{attr}/{value:.+}/",
@@ -270,8 +305,8 @@ public class RestControllers {
                                 LOG.info("Searching by ID " + id);
                                 return accountService.findById(id);
                             }).filter(account -> {
-                        return account != null &&account.getHuman() != null 
-                                    &&!StringUtils.isEmpty(account.getHuman().getEmail());
+                        return account != null && account.getHuman() != null
+                                && !StringUtils.isEmpty(account.getHuman().getEmail());
                     }).map(account -> {
                         LOG.info("Email  " + account.getHuman().getEmail());
                         return account.getHuman().getEmail();

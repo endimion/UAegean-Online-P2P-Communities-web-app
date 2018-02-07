@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -140,7 +141,7 @@ public class Controllers {
     }
 
     @RequestMapping("/authfail")
-    public ModelAndView authorizationFail() {
+    public ModelAndView authorizationFail(@RequestParam(value = "t", required = true) String token) {
         ModelAndView mv = new ModelAndView("authfail");
         mv.addObject("server", props.getServer());
         if (Boolean.parseBoolean(props.getProperties().get("mastiha").toString())) {
@@ -150,6 +151,17 @@ public class Controllers {
             mv.addObject("css", "main2.css");
             mv.addObject("logo", "logo2.png");
         }
+        
+        if(token != null){
+            Cache.ValueWrapper errorMsg =  cacheManager.getCache("errors").get(token);
+            if(errorMsg != null && errorMsg.get() != null){
+                mv.addObject("errorMsg",errorMsg.get());
+            }else{
+                mv.addObject("errorMsg","An unexpected error occured! Please, return to the home page and reauthorize the application, using the eIDAS system.");
+            }
+        }
+        
+        
         return mv;
     }
 

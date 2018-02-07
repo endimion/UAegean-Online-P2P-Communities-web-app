@@ -55,7 +55,10 @@
 
 
                         <div class="row breadCrumbs">
-                            STEP | <b>GO</b>
+                            <div class="col s12">
+                                STEP | <b>GO</b>
+                            </div>
+
                         </div>
 
                         <div class="row instructions">
@@ -63,22 +66,22 @@
                                 <p>By clicking next you will be transfered to the, eIDAS  system to securely authenticate with this application. <br> 
                                 </p>
                                 <p>
-                                Please recall, that using the eIDAS system you trustly provide us your identity attributes such as name, address,
-                                etc. <br>
-                                eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
-                                eIDAS will request your consent before sending us any information. <br></p>
-                                
+                                    Please recall, that using the eIDAS system you trustly provide us your identity attributes such as name, address,
+                                    etc. <br>
+                                    eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
+                                    eIDAS will request your consent before sending us any information. <br></p>
+
                                 After authorization you will be redirected to our service.<br>
                             </div>
                             <div  class="col s12  hide-on-med-and-down ">
                                 <p>By clicking next you will be transfered to the, eIDAS  system to securely authenticate with this application. <br> 
                                 </p>
                                 <p>
-                                Please recall, that using the eIDAS system you trustly provide us your identity attributes such as name, address,
-                                etc. <br>
-                                eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
-                                eIDAS will request your consent before sending us any information. <br></p>
-                                
+                                    Please recall, that using the eIDAS system you trustly provide us your identity attributes such as name, address,
+                                    etc. <br>
+                                    eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
+                                    eIDAS will request your consent before sending us any information. <br></p>
+
                                 After authorization you will be redirected to our service.<br>
                             </div>
                         </div>
@@ -89,13 +92,13 @@
                                 <select id="countrySelection" class="icons">
                                     <!--<option value="" disabled selected></option>-->
                                     <c:forEach var="country" items="${countries}">
-                                    <c:if test = "${country.code == 'GR'}">
-                                        <option selected value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
-                                    </c:if>
-                                    <c:if test = "${country.code != 'GR'}">
-                                        <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
-                                    </c:if>
-                                </c:forEach>
+                                        <c:if test = "${country.code == 'GR'}">
+                                            <option selected value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                        </c:if>
+                                        <c:if test = "${country.code != 'GR'}">
+                                            <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                        </c:if>
+                                    </c:forEach>
 
                                 </select>
                                 <label>Select Your Country of Origin</label>
@@ -118,9 +121,16 @@
                             </div>
                         </div>
 
-
+                        <div class="col s12">
+                            <div id ="element-container">
+                                <div id="element"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
+
                 <div class="col s12 m12 l4">
                     <%@ include file="/WEB-INF/jsp/sidebar.jsp" %>
                 </div>
@@ -140,10 +150,10 @@
 
                                     $(document).ready(function () {
                                         $('select').material_select();
-                                        if(!$('#countrySelection').val()){
+                                        if (!$('#countrySelection').val()) {
                                             $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
                                         }
-                                        
+
                                         $('#countrySelection').change(function () {
                                             if (this.vaue !== "") {
                                                 $('#next').removeClass("disabled").addClass('waves-effect waves-light submit');
@@ -161,13 +171,13 @@
                                         let location = "";
                                         if (typeOfId === "eIDAS") {
 //                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
-                                              location = "${node}" + "?t=${token}"
+                                            location = "${node}" + "?t=${token}"
                                                     + "&sp=${sp}"
-                                                    + "&cc="  + country + "&saml=${samlType}";
+                                                    + "&cc=" + country + "&saml=${samlType}";
                                         } else {
-                                              location = "${node}" + "?t=${token}"
+                                            location = "${node}" + "?t=${token}"
                                                     + "&sp=${sp}"
-                                                    + "&cc="  + country + "&saml=${samlType}";
+                                                    + "&cc=" + country + "&saml=${samlType}";
                                         }
                                         window.location = location;
 
