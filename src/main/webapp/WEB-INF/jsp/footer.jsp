@@ -7,101 +7,33 @@
 
 
 <footer class="page-footer custom-footer">
-    <!-- <div class="container">
-        <div class="row">
-            <div class="col l6 s6">
-                <img class="responsive-img" src="img/uagean_log.jpg" width="60%"">
-            </div>
-            <div class="col l4 offset-l2 s12">
-                <ul>
-                    <li>University of the Aegean</li>
-                    <li></li>
-                    <li>Information Management Lab</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    -->
 
-    <div class="container footer-container">
-        <div class="row" stlye="width: 90%">
+    <div class="container footer-container" style="margin-left: 5rem;">
+        <div class="row" >
             <div id="border" style="    border-top: 1px solid #d0d0d0;
-                 width: 80%;
-                 margin-left: 7%;
+                 width: 88%;
+                 margin-left: 0.7rem;
                  padding-top: 1em;"></div>
-            <div class="col s12" style="padding: 0 0% 0 10%;
-                 ">
 
-                <div class="col s12 m3">
-                    <a href="https://ec.europa.eu/inea/en/connecting-europe-facility">
-                        <img src="img/en_cef.png" class="responsive-img" alt="cef">
-                    </a>
-                </div>
-                <div class="col s4 m1">
-                    <a href="https://ec.europa.eu/inea/en/connecting-europe-facility">
-                        <img src="img/cef-program.png" width="60" alt="cef - programme">
-                    </a>
-                </div>
-                <div class="col s8  m3">
-                    <p style="margin-top: 0">
-                        The integration of Teem Community Project to eIDAS Greece Node, <a href="http://www.aegean.gr/">UAegean</a> 
-                        | <a href="http://www.atlantis-group.gr/i4Mlab">i4m Lab</a>, 
-                        has been funded by CEF - Agreement Number: INEA/CEF/ICT/A2015/1147836 | Action No: 2015-EL-IA-0083
-                    </p>
-                </div>
-                <div class="col s12  m3">
-                    <a href="//opensource.org"><img src="img/open_source1-4.png" class="responsive-img" alt="cef"></a>
-                    <p style="margin:0">Developed with Open Source Software (OSS) </p>
-                </div>
-                <!--            <div class="col s12  m1">
-                                <div>
-                                    <a href="//opensource.org"><img src="img/greece.jpg" class="responsive-img" alt="cef"></a>
-                                </div>
-                                
-                                
-                            </div>-->
+            <div class="col s12 m4 footerCol">
+                <a href="https://ec.europa.eu/inea/en/connecting-europe-facility">
+                    <img src="img/en_cef.jpg" class="responsive-img" alt="cef">
+                </a>
             </div>
+            <div class="col s12  m4 footerCol" style="padding-left: 5%;">
+                <p style="margin-top: 0">
+                    The integration of the Teem Community Project to the eID_EU Greece Node is implemented by <a href="http://www.aegean.gr/">UAegean</a> 
+                    | <a href="http://www.atlantis-group.gr/i4Mlab">i4m Lab</a>, 
+                    and funded by CEF - Agreement Number: INEA/CEF/ICT/A2015/1147836 | Action No: 2015-EL-IA-0083
+                </p>
+            </div>
+            <div class="col s12  m4 footerCol" style="padding-left: 6%;">
+                <a href="//opensource.org"><img src="img/open_source1-4.png" class="responsive-img" alt="cef"></a>
+                <p style="margin:0">Developed with Open Source Software (OSS) </p>
+            </div>
+
         </div>
     </div>
 
 
-    <!--    <div class="footer-copyright">
-            <div class="container">
-                © 2017 Copyright Text
-            </div>
-        </div>-->
 </footer>
-
-<!--
-
-<div class="footerClass s12 m12 l12">
-    <div class="container">
-        <div class="row instructions">
-            <div class="col s4 m4 l4 ">
-                <img class="responsive-img" src="img/uagean_log.jpg" width="100%" height="100%">
-            </div>
-
-            <div class="col s8 m8 l8 ">
-                <div class="container" style="font-size: smaller;">
-                    <div class="row" style="margin-bottom: 0px;margin-top: 25%;">
-                        <div class="col s6 m6 l6 ">
-                            University of the Aegean
-                        </div>
-                        <div class="col s2 m2 l2">
-
-                        </div>
-                        <div class="col s4 m4 l4">
-                            Information Management Lab
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-</div>
-
--->

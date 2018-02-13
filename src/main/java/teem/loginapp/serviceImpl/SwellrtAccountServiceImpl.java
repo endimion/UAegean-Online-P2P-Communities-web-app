@@ -30,7 +30,7 @@ public class SwellrtAccountServiceImpl implements SwellrtAccountService {
     
     /** Saves or Updates the given SwellrtAccount object. 
         However, in the case of update, it does not change (if found)
-        the existing values of CurrentAddress, Gender,email,UAgeanID
+        the existing values of CurrentAddress, Gender,email,UAgeanID, placeOfBirth
     *   @param account, the SwellrtAccountMngDMO object to be updated
     */
     @Override
@@ -48,6 +48,7 @@ public class SwellrtAccountServiceImpl implements SwellrtAccountService {
             //overwrite the value of the received FamilyName value, if it exists
             account = overWriteWithOldValue(oldAccount,account,"CurrentAddress");
             account = overWriteWithOldValue(oldAccount,account,"Gender");
+            account = overWriteWithOldValue(oldAccount,account,"PlaceOfBirth");
             
 //            if (oldAccount.getAttributes().get("CurrentAddress") != null
 //                    && !StringUtils.isEmpty(oldAccount.getAttributes().get("CurrentAddress").getValue())) {

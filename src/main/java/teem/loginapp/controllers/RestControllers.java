@@ -22,6 +22,7 @@ import teem.loginapp.service.TeemProjectService;
 import teem.loginapp.utils.AppUtils;
 import teem.loginapp.utils.Wrappers;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -129,7 +131,7 @@ public class RestControllers {
                     IssErrorResponse err = IssErrorMapper.wrapErrorToObject(responseString);
 //                    LOG.info("Error Message: " + err.getStatusMessage().getValue());
 //                    LOG.info("Error Code: " + err.getStatusCode().getValue());
-
+                    LOG.info(err.getStatusCode().getValue());
                     if (err.getStatusCode().getValue().contains("202002") || err.getStatusCode().getValue().contains("202003")
                             || err.getStatusCode().getValue().contains("202005") || err.getStatusCode().getValue().contains("202011")
                             || err.getStatusCode().getValue().contains("202013") || err.getStatusCode().getValue().contains("202015")
@@ -197,8 +199,10 @@ public class RestControllers {
     @ResponseBody
     public UserCredentials getUserDetailsFromToken(@RequestParam(value = "token", required = true) String token,
             HttpServletRequest request) {
-        UserCredentials creds = new UserCredentials();
 
+        UserCredentials creds = new UserCredentials();
+        String pattern = "http://eidas.europa.eu/attributes/naturalperson/(.*)";
+        Pattern r = Pattern.compile(pattern);
         SwellrtAccountMngDMO account = accountService.findByToken(token);
 
         ValueWrapper optionalValue = cacheManager.getCache("ips").get(request.getRemoteAddr());
@@ -218,10 +222,22 @@ public class RestControllers {
             if (AppUtils.checkIfValidTimestamp(account.getTimestamp())) {
                 List<StrokAttributesMongoDMO> enabledAttributesList = attributeService.getEnabledMng();
                 UserCredentials res = Wrappers.wrapSwellrtAccounttoUserCredentials(account, enabledAttributesList);
-                    
-                res.setAttributes(res.getAttributes().entrySet().stream().filter(p ->{
-                    return !p.getKey().contains("http");
-                }).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
+
+                HashMap cleanedAttributes = new HashMap<String, ReceivedStorkAttribute>();
+                res.getAttributes().entrySet().stream()
+                        .forEach(e -> {
+                            if (r.matcher(e.getKey()).find()
+                                    && e.getValue() != null
+                                    && (e.getValue().getValue() == null || e.getValue().getValue().equals(""))) {
+                                String cleanedKey = e.getKey().replaceAll("http://eidas.europa.eu/attributes/naturalperson/", "");
+                                if (res.getAttributes().get(cleanedKey) == null) {
+                                    cleanedAttributes.put(cleanedKey, e.getValue());
+                                }
+                            } else {
+                                cleanedAttributes.put(e.getKey(), e.getValue());
+                            }
+                        });
+                res.setAttributes(cleanedAttributes);
                 return res;
 
             } else {

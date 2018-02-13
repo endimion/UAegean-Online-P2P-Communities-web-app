@@ -28,7 +28,7 @@
             <div class="container">
             <div class="row  mainContent">
 
-                <div class="col s8 m8 l8">
+                <div class="col s8 m8 l10" style="margin-top: 13%;">
                     <div class="container">
                         <div class="row ">
                             <div class="progress">
@@ -47,9 +47,9 @@
 
                     </div>
                 </div>
-                <div class="col s4 m4 l4">
-                    <%@ include file="/WEB-INF/jsp/sidebar.jsp" %>
-                </div>
+<!--                <div class="col s12 m2 l2">
+                    <%--<%@ include file="/WEB-INF/jsp/sidebar.jsp" %>--%>
+                </div>-->
 
             </div>
             <div class="row">
@@ -66,8 +66,8 @@
 
     </div>
 
-
-    <script src="//mastihawonder-vm.aegean.gr:9898/swellrt.js"></script>
+<!--
+    <script src="//mastihawonder-vm.aegean.gr:9898/swellrt.js"></script>-->
     <!--<script src="//localhost:9898/swellrt.js"></script>-->
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

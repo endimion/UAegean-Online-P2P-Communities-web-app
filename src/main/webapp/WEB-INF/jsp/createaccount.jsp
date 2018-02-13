@@ -50,12 +50,12 @@
 
             <div class="row  mainContent">
 
-                <form class="col s12 l8">
-                    <div class="container">
+                <form class="col s12 l10">
+                    <div class="container" style="width:90%">
 
                         <div class="row breadCrumbs">
                             <div class="col s12">
-                                STEP | <b>GO</b>
+                                STEP | <b>GO!</b>
                             </div>
 
                         </div>
@@ -64,12 +64,12 @@
                                 <div class="col s12 flow-text hide-on-large-only">
                                     Thank you for applying with us! <br>
                                     <p>
-                                        You will now be directed to the eIDAS to securely identify 
+                                        You will now be directed to the eID_EU Network to securely identify 
                                         and trustly provide us your identity attributes such as name, address,
                                         etc. <br></p>
                                     <p>
-                                        eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
-                                        eIDAS will request your consent before sending us any information. <br>
+                                        The eID_EU Network will provide us with those attributes from the attribute providers you suggest. <br>
+                                        The eID_EU Network will request your consent before sending us any information. <br>
                                         After authorization you will be redirected to our service.<br>
                                     </p>
                                     <p>
@@ -81,12 +81,12 @@
                                 <div class="col s12 hide-on-med-and-down ">
                                     Thank you for applying with us! <br>
                                     <p>
-                                        You will now be directed to the eIDAS to securely identify 
+                                        You will now be directed to the eID_EU Network to securely identify 
                                         and trustly provide us your identity attributes such as name, address,
                                         etc. <br></p>
                                     <p>
-                                        eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
-                                        eIDAS will request your consent before sending us any information. <br>
+                                        The eID_EU Network will provide us with those attributes from the attribute providers you suggest. <br>
+                                        The eID_EU Network will request your consent before sending us any information. <br>
                                         After authorization you will be redirected to our service.<br>
                                     </p>
                                     <p>
@@ -129,7 +129,7 @@
 
                                 <div class="input-field col s12"  style="display:none">
                                     <select id="typeOfLogin" class="icons" >
-                                        <option value="eIDAS"  >eIDAS</option>
+                                        <option value="eIDAS"  >eID_EU Network</option>
                                         <option value="peps" selected>PEPS  </option>    
                                     </select>
                                     <label>Select means of identification </label>
@@ -137,23 +137,23 @@
 
                             </div>
                             <div class="row">
-                                <div class="col s12 m12 l6">
-                                    <a class="waves-effect waves-light btn-large swell-btn cancel-btn" onclick="onCancelClick()">Cancel</a>
+                                <div class="col s12 m12 l6" >
+                                    <a class="waves-effect waves-light btn swell-btn cancel-btn" onclick="onCancelClick()">Cancel</a>
                                 </div>
-                                <div class="col s12 m12 l6">
-                                    <a id="next" class="waves-effect waves-light btn-large swell-btn next-btn" onclick="onNextClick()">Next</a>
-                                </div>
-
-                                <div class="col s12">
-                                    <div id ="element-container">
-                                        <div id="element"></div>
-                                    </div>
+                                <div class="col s12 m12 l6" >
+                                    <a id="next" class="waves-effect waves-light btn swell-btn next-btn" onclick="onNextClick()">Next</a>
                                 </div>
                             </div>
+                            <!--                                <div class="col s12">
+                                                                <div id ="element-container">
+                                                                    <div id="element"></div>
+                                                                </div>
+                                                            </div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </form>
-                <div class="col s12 m12 l4">
+                <div class="col s12 m12 l2">
                     <%@ include file="/WEB-INF/jsp/sidebar.jsp" %>
                 </div>
 

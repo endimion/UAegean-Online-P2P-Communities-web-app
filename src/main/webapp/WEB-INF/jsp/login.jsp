@@ -50,88 +50,85 @@
 
             <div class="row  mainContent">
 
-                <div class="col s12 m12 l8">
-                    <div class="container">
+                <div class="col s12 m12 l10">
+                    <div class="container" style="width:90%">
 
 
                         <div class="row breadCrumbs">
                             <div class="col s12">
-                                STEP | <b>GO</b>
+                                STEP | <b>GO!</b>
                             </div>
 
                         </div>
+                        <div class="col 12">
+                            <div class="row instructions">
+                                <div  class="col s12 flow-text hide-on-large-only">
+                                    <p>By clicking next you will be transfered to the, eID_EU Network  to securely authenticate with this application. <br> 
+                                    </p>
+                                    <p>
+                                        Please recall, that using the eID_EU Network  you trustly provide us your identity attributes such as name, address,
+                                        etc. <br>
+                                        The eID_EU Network will provide us with those attributes from the attribute providers you suggest. <br>
+                                        The eID_EU Network will request your consent before sending us any information. <br></p>
 
-                        <div class="row instructions">
-                            <div  class="col s12 flow-text hide-on-large-only">
-                                <p>By clicking next you will be transfered to the, eIDAS  system to securely authenticate with this application. <br> 
-                                </p>
-                                <p>
-                                    Please recall, that using the eIDAS system you trustly provide us your identity attributes such as name, address,
-                                    etc. <br>
-                                    eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
-                                    eIDAS will request your consent before sending us any information. <br></p>
+                                    After authorization you will be redirected to our service.<br>
+                                </div>
+                                <div  class="col s12  hide-on-med-and-down ">
+                                    <p>By clicking next you will be transfered to the eID_EU Network  to securely authenticate with this application. <br> 
+                                    </p>
+                                    <p>
+                                        Please recall, that using the eID_EU Network you trustly provide us your identity attributes such as name, address,
+                                        etc. <br>
+                                        The eID_EU Network will provide us with those attributes from the attribute providers you suggest. <br>
+                                        The eID_EU Network will request your consent before sending us any information. <br></p>
 
-                                After authorization you will be redirected to our service.<br>
-                            </div>
-                            <div  class="col s12  hide-on-med-and-down ">
-                                <p>By clicking next you will be transfered to the, eIDAS  system to securely authenticate with this application. <br> 
-                                </p>
-                                <p>
-                                    Please recall, that using the eIDAS system you trustly provide us your identity attributes such as name, address,
-                                    etc. <br>
-                                    eIDAS will provide us with those attributes from the attribute providers you suggest. <br>
-                                    eIDAS will request your consent before sending us any information. <br></p>
-
-                                After authorization you will be redirected to our service.<br>
-                            </div>
-                        </div>
-
-                        <div class="row">
-
-                            <div class="input-field col s12">
-                                <select id="countrySelection" class="icons">
-                                    <!--<option value="" disabled selected></option>-->
-                                    <c:forEach var="country" items="${countries}">
-                                        <c:if test = "${country.code == 'GR'}">
-                                            <option selected value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
-                                        </c:if>
-                                        <c:if test = "${country.code != 'GR'}">
-                                            <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
-                                        </c:if>
-                                    </c:forEach>
-
-                                </select>
-                                <label>Select Your Country of Origin</label>
-                            </div>
-
-                            <div class="input-field col s12" style="display:none">
-                                <select id="typeOfLogin" class="icons" >
-                                    <option value="eIDAS"  >eIDAS</option>
-                                    <option value="peps" selected>PEPS</option>    
-                                </select>
-                                <label>Select means of identification </label>
+                                    After authorization you will be redirected to our service.<br>
+                                </div>
                             </div>
 
 
-                            <div class="col s12 m12 l6">
-                                <a class="waves-effect waves-light btn-large swell-btn cancel-btn" onclick="onCancelClick()">Cancel</a>
-                            </div>
-                            <div class="col s12 m12 l6">
-                                <a id="next" class="waves-effect waves-light btn-large swell-btn next-btn" onclick="onNextClick()">Next</a>
-                            </div>
-                        </div>
+                            <div class="row">
 
-                        <div class="col s12">
-                            <div id ="element-container">
-                                <div id="element"></div>
+                                <div class="input-field col s12">
+                                    <select id="countrySelection" class="icons">
+                                        <!--<option value="" disabled selected></option>-->
+                                        <c:forEach var="country" items="${countries}">
+                                            <c:if test = "${country.code == 'GR'}">
+                                                <option selected value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                            </c:if>
+                                            <c:if test = "${country.code != 'GR'}">
+                                                <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                            </c:if>
+                                        </c:forEach>
+
+                                    </select>
+                                    <label>Select Your Country of Origin</label>
+                                </div>
+
+                                <div class="input-field col s12" style="display:none">
+                                    <select id="typeOfLogin" class="icons" >
+                                        <option value="eIDAS"  >eID_EU Network</option>
+                                        <option value="peps" selected>PEPS</option>    
+                                    </select>
+                                    <label>Select means of identification </label>
+                                </div>
+
+
+                                <div class="col s12 m12 l6" style="padding-top: 1rem;">
+                                    <a class="waves-effect waves-light btn swell-btn cancel-btn" onclick="onCancelClick()">Cancel</a>
+                                </div>
+                                <div class="col s12 m12 l6" style="padding-top: 1rem;">
+                                    <a id="next" class="waves-effect waves-light btn swell-btn next-btn" onclick="onNextClick()">Next</a>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
 
 
 
-                <div class="col s12 m12 l4">
+                <div class="col s12 m12 l2">
                     <%@ include file="/WEB-INF/jsp/sidebar.jsp" %>
                 </div>
 
@@ -148,46 +145,46 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
         <script>
 
-                                    $(document).ready(function () {
-                                        $('select').material_select();
-                                        if (!$('#countrySelection').val()) {
-                                            $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
-                                        }
-
-                                        $('#countrySelection').change(function () {
-                                            if (this.vaue !== "") {
-                                                $('#next').removeClass("disabled").addClass('waves-effect waves-light submit');
-                                            } else {
+                                        $(document).ready(function () {
+                                            $('select').material_select();
+                                            if (!$('#countrySelection').val()) {
                                                 $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
                                             }
 
+                                            $('#countrySelection').change(function () {
+                                                if (this.vaue !== "") {
+                                                    $('#next').removeClass("disabled").addClass('waves-effect waves-light submit');
+                                                } else {
+                                                    $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
+                                                }
+
+                                            });
                                         });
-                                    });
 
 
-                                    function onNextClick() {
-                                        let country = $("#countrySelection").val();
-                                        let typeOfId = $('#typeOfLogin').val();
-                                        let location = "";
-                                        if (typeOfId === "eIDAS") {
+                                        function onNextClick() {
+                                            let country = $("#countrySelection").val();
+                                            let typeOfId = $('#typeOfLogin').val();
+                                            let location = "";
+                                            if (typeOfId === "eIDAS") {
 //                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
-                                            location = "${node}" + "?t=${token}"
-                                                    + "&sp=${sp}"
-                                                    + "&cc=" + country + "&saml=${samlType}";
-                                        } else {
-                                            location = "${node}" + "?t=${token}"
-                                                    + "&sp=${sp}"
-                                                    + "&cc=" + country + "&saml=${samlType}";
+                                                location = "${node}" + "?t=${token}"
+                                                        + "&sp=${sp}"
+                                                        + "&cc=" + country + "&saml=${samlType}";
+                                            } else {
+                                                location = "${node}" + "?t=${token}"
+                                                        + "&sp=${sp}"
+                                                        + "&cc=" + country + "&saml=${samlType}";
+                                            }
+                                            window.location = location;
+
+
                                         }
-                                        window.location = location;
 
-
-                                    }
-
-                                    function onCancelClick() {
-                                        let token = "${token}";
-                                        window.location = "authfail";
-                                    }
+                                        function onCancelClick() {
+                                            let token = "${token}";
+                                            window.location = "authfail";
+                                        }
         </script>
     </body>
 </html>

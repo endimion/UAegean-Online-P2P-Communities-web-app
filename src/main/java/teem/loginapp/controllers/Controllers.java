@@ -141,7 +141,7 @@ public class Controllers {
     }
 
     @RequestMapping("/authfail")
-    public ModelAndView authorizationFail(@RequestParam(value = "t", required = true) String token) {
+    public ModelAndView authorizationFail(@RequestParam(value = "t", required = false) String token) {
         ModelAndView mv = new ModelAndView("authfail");
         mv.addObject("server", props.getServer());
         if (Boolean.parseBoolean(props.getProperties().get("mastiha").toString())) {

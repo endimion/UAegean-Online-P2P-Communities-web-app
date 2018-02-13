@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>gr.ntua.swellrt</groupId>
-    <artifactId>teem.login</artifactId>
+    <artifactId>loginapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -170,6 +170,12 @@
             <artifactId>spring-boot-test-autoconfigure</artifactId>
             <version>1.5.7.RELEASE</version>
             <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>8.5.20</version>
             <type>jar</type>
         </dependency>
     </dependencies>
