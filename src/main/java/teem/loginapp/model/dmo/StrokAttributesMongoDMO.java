@@ -17,25 +17,30 @@ public class StrokAttributesMongoDMO {
 
     @Id
     private String id;
-    
-    
+
     private String name;
-    
+
     private boolean enabled;
 
-    
     private int complex;
-    
+
     private int required;
 
-    
     private String eidasName;
-    
-    
+
     private String requestedLoa;
-    
-    
+
+    private String friendlyName;
+
     private int requestedStorkQaa;
+
+    public String getFriendlyName() {
+        return friendlyName;
+    }
+
+    public void setFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
+    }
 
     public String getId() {
         return id;
@@ -100,8 +105,5 @@ public class StrokAttributesMongoDMO {
     public void setRequestedStorkQaa(int requestedStorkQaa) {
         this.requestedStorkQaa = requestedStorkQaa;
     }
-    
-    
-    
 
 }

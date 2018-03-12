@@ -42,25 +42,24 @@
     <body>
 
 
-        <div  >
-            <%@ include file="/WEB-INF/jsp/header.jsp" %>
-        </div>
+        <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
-        <div class="container">
+        <main>
 
-            <div class="row  mainContent">
+            <div class="container">
+                <div class="row  mainContent">
+                    <div class="col s12 l10" style="
+                         padding-left: 1.7%;
+                         ">
+                        <div class="container" style="width:90%">
 
-                <div class="col s12 m12 l10">
-                    <div class="container" style="width:90%">
+                            <div class="row breadCrumbs">
+                                <div class="col s12">
+                                    STEP | <b>GO!</b>
+                                </div>
 
-
-                        <div class="row breadCrumbs">
-                            <div class="col s12">
-                                STEP | <b>GO!</b>
                             </div>
 
-                        </div>
-                        <div class="col 12">
                             <div class="row instructions">
                                 <div  class="col s12 flow-text hide-on-large-only">
                                     <p>By clicking next you will be transfered to the, eID_EU Network  to securely authenticate with this application. <br> 
@@ -72,6 +71,9 @@
                                         The eID_EU Network will request your consent before sending us any information. <br></p>
 
                                     After authorization you will be redirected to our service.<br>
+                                    <p>To review the identification attributes that will be requested by eID_EU click 
+                                        <a  href="#modal1">HERE</a>
+                                    </p>
                                 </div>
                                 <div  class="col s12  hide-on-med-and-down ">
                                     <p>By clicking next you will be transfered to the eID_EU Network  to securely authenticate with this application. <br> 
@@ -83,6 +85,9 @@
                                         The eID_EU Network will request your consent before sending us any information. <br></p>
 
                                     After authorization you will be redirected to our service.<br>
+                                    <p>To review the identification attributes that will be requested by eID_EU click 
+                                        <a  href="#modal1">HERE</a>
+                                    </p>
                                 </div>
                             </div>
 
@@ -122,23 +127,31 @@
                                 </div>
                             </div>
 
+
                         </div>
                     </div>
+
+
+
+                    <div class="col s12 m12 l2">
+                        <%@ include file="/WEB-INF/jsp/sidebar.jsp" %>
+                    </div>
+
                 </div>
 
+                <%@ include file="/WEB-INF/jsp/modalProps.jsp" %>
 
 
-                <div class="col s12 m12 l2">
-                    <%@ include file="/WEB-INF/jsp/sidebar.jsp" %>
-                </div>
 
             </div>
 
-            <div class="row">
-                <%@ include file="/WEB-INF/jsp/footer.jsp" %>
-            </div>
+
+
+        </main>
+
+        <div class="row">
+            <%@ include file="/WEB-INF/jsp/footer.jsp" %>
         </div>
-
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <!-- Compiled and minified JavaScript -->
@@ -147,6 +160,9 @@
 
                                         $(document).ready(function () {
                                             $('select').material_select();
+                                            // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+                                            $('.modal').modal();
+
                                             if (!$('#countrySelection').val()) {
                                                 $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
                                             }
@@ -167,7 +183,7 @@
                                             let typeOfId = $('#typeOfLogin').val();
                                             let location = "";
                                             if (typeOfId === "eIDAS") {
-//                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
+                                                //                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
                                                 location = "${node}" + "?t=${token}"
                                                         + "&sp=${sp}"
                                                         + "&cc=" + country + "&saml=${samlType}";

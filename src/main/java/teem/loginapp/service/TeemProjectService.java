@@ -5,6 +5,7 @@
  */
 package teem.loginapp.service;
 
+import java.util.List;
 import teem.loginapp.model.dmo.TeemProject;
 
 /**
@@ -13,4 +14,6 @@ import teem.loginapp.model.dmo.TeemProject;
  */
 public interface TeemProjectService {
     public TeemProject findByWave_id(String waveId);
+    
+    public  List<String> getParticipantsIfPromoter(String waveId, String promoter);
 }

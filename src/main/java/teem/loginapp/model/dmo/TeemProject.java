@@ -17,12 +17,38 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "models")
 public class TeemProject {
 
+    public static class Root {
+
+        private String id;
+
+        private String promoter;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getPromoter() {
+            return promoter;
+        }
+
+        public void setPromoter(String promoter) {
+            this.promoter = promoter;
+        }
+
+    }
+
     @Id
     private String id;
     @Field("wave_id")
     private String waveId;
     @Field("wavelet_id")
     private String waveletId;
+    private Root root;
+
     private List<String> participants;
 
     public String getId() {
@@ -56,6 +82,13 @@ public class TeemProject {
     public void setParticipants(List<String> participants) {
         this.participants = participants;
     }
-    
-    
+
+    public Root getRoot() {
+        return root;
+    }
+
+    public void setRoot(Root root) {
+        this.root = root;
+    }
+
 }

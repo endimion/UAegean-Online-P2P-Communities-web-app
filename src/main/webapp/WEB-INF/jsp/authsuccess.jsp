@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-     <head>
+    <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,42 +21,42 @@
         <link rel="stylesheet" href="css/${css}"> 
     </head>
     <body>
-        
-            <div  >
-                <%@ include file="/WEB-INF/jsp/header.jsp" %>
-            </div>
+
+        <%@ include file="/WEB-INF/jsp/header.jsp" %>
+        <main>
             <div class="container">
-            <div class="row  mainContent">
+                <div class="row  mainContent">
 
-                <div class="col s8 m8 l10" style="margin-top: 13%;">
-                    <div class="container">
-                        <div class="row ">
-                            <div class="progress">
-                                <div class="indeterminate"></div>
+                    <div class="col s8 m8 l10" style="margin-top: 13%;">
+                        <div class="container">
+                            <div class="row ">
+                                <div class="progress">
+                                    <div class="indeterminate"></div>
+                                </div>
+
+                                <div id="message">
+
+                                </div>
                             </div>
 
-                            <div id="message">
 
-                            </div>
+
+
+
+
                         </div>
-
-
-
-
-
-
                     </div>
-                </div>
-<!--                <div class="col s12 m2 l2">
+                    <!--                <div class="col s12 m2 l2">
                     <%--<%@ include file="/WEB-INF/jsp/sidebar.jsp" %>--%>
                 </div>-->
 
-            </div>
-            <div class="row">
-                <%@ include file="/WEB-INF/jsp/footer.jsp" %>
-            </div>
-            </div>
+                </div>
 
+            </div>
+        </main>
+        <div class="row">
+            <%@ include file="/WEB-INF/jsp/footer.jsp" %>
+        </div>
 
         <input type="hidden" id="username" value=${username}>
         <input type="hidden" id="password" value=${password}>
@@ -66,8 +66,8 @@
 
     </div>
 
-<!--
-    <script src="//mastihawonder-vm.aegean.gr:9898/swellrt.js"></script>-->
+    <!--
+        <script src="//mastihawonder-vm.aegean.gr:9898/swellrt.js"></script>-->
     <!--<script src="//localhost:9898/swellrt.js"></script>-->
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -77,11 +77,11 @@
     <script>
         $(document).ready(function () {
             $("#message").html("connecting to service...");
-            SwellRT.ready(function () {
-                $("#message").html("processing request...");
-                window.location = "//${server}/eID/"
-                        + getParameterByName("t");
-            });
+//            SwellRT.ready(function () {
+            $("#message").html("processing request...");
+            window.location = "//${server}/eID/"
+                    + getParameterByName("t");
+//            });
         });
 
 

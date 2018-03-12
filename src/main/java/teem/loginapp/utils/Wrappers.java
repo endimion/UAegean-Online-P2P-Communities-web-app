@@ -391,4 +391,22 @@ public class Wrappers {
         }
         return null;
     }
+
+    public static List<String> getPersonalAttributes(List<StrokAttributesMongoDMO> attributes) {
+        return attributes.stream().filter(attr -> {
+            return attr.getEidasName().contains("http://eidas.europa.eu/attributes/naturalperson/");
+        }).map(attr -> {
+            return attr.getFriendlyName();
+        }).collect(Collectors.toList());
+
+    }
+
+    public static List<String> getLegalAttributes(List<StrokAttributesMongoDMO> attributes) {
+        return attributes.stream().filter(attr -> {
+            return attr.getEidasName().contains("http://eidas.europa.eu/attributes/legalperson/");
+        }).map(attr -> {
+            return attr.getFriendlyName();
+        }).collect(Collectors.toList());
+
+    }
 }

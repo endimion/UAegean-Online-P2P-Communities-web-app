@@ -1,0 +1,92 @@
+{
+    "_id": "1232",
+    "wave_id": "local.net/s+hRzAC_CEwKA",
+    "wavelet_id": "local.net/swl+root",
+    "participants": ["sofiianopoylos_emmanoyhl@local.net", "@local.net", "nefielh_petropoyloy@local.net", "panoraia_poulaki@local.net", "mirto_theodoroglou@local.net", "andreas_syrmas@local.net", "maria_kakociannakh@local.net"],
+    "root": {
+        "needs": [{
+                "author": "panoraia_poulaki@local.net",
+                "completionDate": "2017-07-13T21:13:34.630Z",
+                "completed": "true",
+                "time": "2017-07-13T21:13:02.929Z",
+                "_id": "6418040119318877",
+                "text": ""
+            }, {
+                "comments": [{
+                        "author": "panoraia_poulaki@local.net",
+                        "time": "2017-07-13T21:19:03.076Z",
+                        "text": "diafwnw"
+                    }],
+                "author": "panoraia_poulaki@local.net",
+                "completionDate": "2017-07-16T10:29:34.414Z",
+                "completed": "true",
+                "time": "2017-07-13T21:18:28.996Z",
+                "_id": "4517661910580282",
+                "text": "test"
+            }],
+        "image": {
+            "id": "hRzAC_CEwKI",
+            "filename": "blob",
+            "url": "/attachment/hRzAC_CEwKI",
+            "mimetype": "application/octet-stream",
+            "size": "605548",
+            "thumbnail": "/thumbnail/hRzAC_CEwKI"
+        },
+        "featured": "1495570251588",
+        "attachments": {},
+        "_urlId": "bG9jYWwubmV0L3MraFJ6QUNfQ0V3S0E",
+        "lastAccesses": [{
+                "needs": {
+                    "last": "2017-07-15T18:09:53.277Z",
+                    "prev": "2017-07-15T18:09:53.277Z"
+                },
+                "pad": {
+                    "last": "2018-01-15T19:06:55.001Z",
+                    "prev": "2018-01-15T19:06:44.331Z"
+                },
+                "user": "sofiianopoylos_emmanoyhl@local.net"
+            }, {
+                "pad": {
+                    "last": "2017-07-30T07:31:35.627Z",
+                    "prev": "2017-07-13T15:17:29.244Z"
+                },
+                "user": "nefielh_petropoyloy@local.net"
+            }, {
+                "needs": {
+                    "last": "2017-07-13T21:19:03.076Z",
+                    "prev": "2017-07-13T21:19:03.076Z"
+                },
+                "pad": {
+                    "last": "2017-07-13T21:19:56.446Z",
+                    "prev": "2017-07-13T21:13:51.041Z"
+                },
+                "user": "panoraia_poulaki@local.net"
+            }, {
+                "pad": {
+                    "last": "2017-07-19T17:19:11.393Z",
+                    "prev": "2017-07-19T17:17:58.290Z"
+                },
+                "user": "mirto_theodoroglou@local.net"
+            }, {
+                "pad": {
+                    "last": "2017-10-03T19:29:43.790Z",
+                    "prev": "2017-07-26T19:45:33.598Z"
+                },
+                "user": "andreas_syrmas@local.net"
+            }],
+        "type": "deleted",
+        "title": "Mastiha Wonder",
+        "shareMode": "public",
+        "pad": {
+            "excerpt": "",
+            "author": "sofiianopoylos_emmanoyhl@local.net",
+            "contributors": ["sofiianopoylos_emmanoyhl@local.net", "panoraia_poulaki@local.net"],
+            "lastmodtime": "1499980383972"
+        },
+        "chat": [],
+        "promoter": "sofiianopoylos_emmanoyhl@local.net",
+        "id": "local.net/s+hRzAC_CEwKA",
+        "supporters": [],
+        "communities": ["local.net/s+_zF8xkFkK1I"]
+    }
+}

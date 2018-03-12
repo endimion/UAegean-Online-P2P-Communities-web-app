@@ -33,20 +33,20 @@
     <body>
 
 
-        <div  >
-            <%@ include file="/WEB-INF/jsp/header.jsp" %>
-        </div>
+        <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
-        <div class="container">
-            <div class="row  mainContent">
-                <div class="col s12 m12 l10">
-                    <div class="container" style="width:90%">
+        <main>
+
+            <div class="container">
+                <div class="row  mainContent">
+                    <div class="col s12 m12 l10">
+                        <div class="container" style="width:90%">
 
 
-                        <div class="row breadCrumbs">
-                            STEP | <b>RETURN</b>
-                        </div>
-                        <!--<div class="container">-->
+                            <div class="row breadCrumbs">
+                                STEP | <b>RETURN</b>
+                            </div>
+                            <!--<div class="container">-->
                             <div class="row instructions">
                                 <div class="col s12 flow-text hide-on-large-only">
                                     <h4>Error processing request.</h4>
@@ -62,22 +62,25 @@
                                     <a class="waves-effect waves-light btn swell-btn next-btn" onclick="onHomeClick()">Home</a>
                                 </div>
                             </div>
-                        <!--</div>-->
+                            <!--</div>-->
+
+                        </div>
+
 
                     </div>
 
-
+                    <div class="col s12 m2 l2">
+                        <%@ include file="/WEB-INF/jsp/sidebar.jsp" %>
+                    </div>
                 </div>
 
-                <div class="col s12 m2 l2">
-                    <%@ include file="/WEB-INF/jsp/sidebar.jsp" %>
-                </div>
-            </div>
 
-            <div class="row">
-                <%@ include file="/WEB-INF/jsp/footer.jsp" %>
             </div>
+        </main>
+        <div class="row">
+            <%@ include file="/WEB-INF/jsp/footer.jsp" %>
         </div>
+
 
         <script>
             function onHomeClick() {

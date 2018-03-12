@@ -6,6 +6,7 @@
 package teem.loginapp.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import teem.loginapp.model.dmo.AccountBuilder.SwellrtAccountMngDMO;
 import teem.loginapp.model.dmo.StrokAttributesMongoDMO;
 import teem.loginapp.pojo.ReceivedStorkAttribute;
@@ -335,6 +336,34 @@ public class RestControllers {
                 return "Invalid token";
             }
         };
+        return response;
+    }
+
+    @RequestMapping(value = "/getParticipants", method = {RequestMethod.GET})
+    public @ResponseBody
+    Callable<List<String>> getParticipants(@RequestParam(value = "token", required = false) String token,
+            @RequestParam(value = "projectId", required = false)  String projectId,
+            HttpServletRequest request) {
+
+        Callable<List<String>> response = () -> {
+            ValueWrapper optionalValue = cacheManager.getCache("ips").get(request.getRemoteAddr());
+            List<String> resp = new ArrayList();
+            if (optionalValue == null) {
+                resp.add("UN_AUTHORIZED_IP");
+                return resp;
+            }
+            if (!token.contains(optionalValue.get().toString())) {
+                resp.add("IP_TOKEN_MISSMATCH");
+                return resp;
+            }
+            SwellrtAccountMngDMO account = accountService.findByToken(token);
+            if (account == null || StringUtils.isEmpty(account.getId())) {
+                resp.add("Account is not valid");
+                return resp;
+            }
+            return projectServ.getParticipantsIfPromoter(projectId,account.getId());
+        };
+
         return response;
     }
 

@@ -15,16 +15,17 @@
                  margin-left: 0.7rem;
                  padding-top: 1em;"></div>
 
-            <div class="col s12 m4 footerCol">
+            <div class="col s12 m4 footerCol" id="flags">
                 <a href="https://ec.europa.eu/inea/en/connecting-europe-facility">
                     <img src="img/en_cef.jpg" class="responsive-img" alt="cef">
                 </a>
             </div>
             <div class="col s12  m4 footerCol" style="padding-left: 5%;">
                 <p style="margin-top: 0">
-                    The integration of the Teem Community Project to the eID_EU Greece Node is implemented by <a href="http://www.aegean.gr/">UAegean</a> 
-                    | <a href="http://www.atlantis-group.gr/i4Mlab">i4m Lab</a>, 
-                    and funded by CEF - Agreement Number: INEA/CEF/ICT/A2015/1147836 | Action No: 2015-EL-IA-0083
+                <p style="margin-top: 0">
+                    The integration of the Teem Community Project to the eID_EU Greece Node is implemented by <a href="http://www.aegean.gr/">UAegean</a>  | <a href="http://www.atlantis-group.gr/i4Mlab">i4m Lab</a>, and funded by CEF - Agreement No INEA/CEF/ICT/A2015/1147836 | Action No: 2015-EL-IA-0083
+                </p>
+
                 </p>
             </div>
             <div class="col s12  m4 footerCol" style="padding-left: 6%;">

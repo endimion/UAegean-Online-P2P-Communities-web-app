@@ -5,11 +5,9 @@
  */
 package teem.loginapp.serviceImpl;
 
-import com.mongodb.MongoURI;
 import teem.loginapp.model.dao.StorkAttributeMngRepository;
 import teem.loginapp.model.dao.StorkAttributeValueMgnRepository;
 import teem.loginapp.model.dmo.StorkAttributeValueMongoDMO;
-import teem.loginapp.model.dmo.StrokAttributesMongoDMO;
 import teem.loginapp.service.StorkAttributeValueService;
 import teem.loginapp.utils.MongoUtils;
 import java.util.List;

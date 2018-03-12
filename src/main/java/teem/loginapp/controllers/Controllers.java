@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import teem.loginapp.service.PropertiesService;
+import teem.loginapp.service.StorkAttributeService;
+import teem.loginapp.utils.Wrappers;
 
 /**
  *
@@ -49,6 +51,9 @@ public class Controllers {
     @Autowired
     private PropertiesService props;
 
+    @Autowired
+    private StorkAttributeService attributeService;
+
     /**
      * @param sp, service provider either sp3 or sp4 or sp5
      * @return
@@ -71,6 +76,9 @@ public class Controllers {
             mv.addObject("css", "main2.css");
             mv.addObject("logo", "logo2.png");
         }
+
+        mv.addObject("natural", Wrappers.getPersonalAttributes(attributeService.getEnabledMng()));
+        mv.addObject("legal", Wrappers.getLegalAttributes(attributeService.getEnabledMng()));
 
         LOG.info("Generated token " + token);
         LOG.info("IP " + request.getRemoteAddr());
@@ -99,6 +107,9 @@ public class Controllers {
             mv.addObject("css", "main2.css");
             mv.addObject("logo", "logo2.png");
         }
+
+        mv.addObject("natural", Wrappers.getPersonalAttributes(attributeService.getEnabledMng()));
+        mv.addObject("legal", Wrappers.getLegalAttributes(attributeService.getEnabledMng()));
 
         LOG.info("Generated token " + token);
         if (cacheManager.getCache("ips").get(request.getRemoteAddr()) != null) {
@@ -151,17 +162,16 @@ public class Controllers {
             mv.addObject("css", "main2.css");
             mv.addObject("logo", "logo2.png");
         }
-        
-        if(token != null){
-            Cache.ValueWrapper errorMsg =  cacheManager.getCache("errors").get(token);
-            if(errorMsg != null && errorMsg.get() != null){
-                mv.addObject("errorMsg",errorMsg.get());
-            }else{
-                mv.addObject("errorMsg","An unexpected error occured! Please, return to the home page and reauthorize the application, using the eIDAS system.");
+
+        if (token != null) {
+            Cache.ValueWrapper errorMsg = cacheManager.getCache("errors").get(token);
+            if (errorMsg != null && errorMsg.get() != null) {
+                mv.addObject("errorMsg", errorMsg.get());
+            } else {
+                mv.addObject("errorMsg", "An unexpected error occured! Please, return to the home page and reauthorize the application, using the eIDAS system.");
             }
         }
-        
-        
+
         return mv;
     }
 
