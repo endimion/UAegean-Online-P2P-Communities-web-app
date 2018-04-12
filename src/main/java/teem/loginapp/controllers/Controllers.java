@@ -21,10 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import teem.loginapp.service.PropertiesService;
 import teem.loginapp.service.StorkAttributeService;
 import teem.loginapp.utils.Wrappers;
@@ -89,8 +93,8 @@ public class Controllers {
         return mv;
     }
 
-    @RequestMapping(value = {"/createacount"})
-    public ModelAndView createAccount(@RequestParam(value = "sp", required = true) String sp,
+    @RequestMapping(value = {"/createacount", "createaccount"})
+    public ModelAndView createAccount(@RequestParam(value = "sp", required = false) String sp,
             HttpServletRequest request) {
 
         ModelAndView mv = new ModelAndView("createaccount");
@@ -123,7 +127,7 @@ public class Controllers {
 
     @RequestMapping("/authsuccess")
     public ModelAndView authorizationSuccess(@RequestParam(value = "t", required = true) String token,
-            HttpSession httpSession, HttpServletRequest request, HttpServletResponse response) {
+            HttpSession httpSession, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attributes) {
         AccountBuilder.SwellrtAccountMngDMO account = accountService.findByToken(token);
         if (account != null) {
             ModelAndView mv = new ModelAndView("authsuccess");
@@ -145,14 +149,15 @@ public class Controllers {
 
             return mv;
         }
+        attributes.addFlashAttribute("errorMsg", "User Not found. You must be registered in order to use the service! Please return to the home page and register");
+        ModelAndView modelAndView = new ModelAndView("redirect:/authfail?t=err");
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/authfail");
         return modelAndView;
 
     }
 
     @RequestMapping("/authfail")
-    public ModelAndView authorizationFail(@RequestParam(value = "t", required = false) String token) {
+    public ModelAndView authorizationFail(@RequestParam(value = "t", required = false) String token, Model model) {
         ModelAndView mv = new ModelAndView("authfail");
         mv.addObject("server", props.getServer());
         if (Boolean.parseBoolean(props.getProperties().get("mastiha").toString())) {
@@ -162,8 +167,8 @@ public class Controllers {
             mv.addObject("css", "main2.css");
             mv.addObject("logo", "logo2.png");
         }
-
-        if (token != null) {
+        
+        if (token != null && model.asMap().get("errorMsg") == null) {
             Cache.ValueWrapper errorMsg = cacheManager.getCache("errors").get(token);
             if (errorMsg != null && errorMsg.get() != null) {
                 mv.addObject("errorMsg", errorMsg.get());

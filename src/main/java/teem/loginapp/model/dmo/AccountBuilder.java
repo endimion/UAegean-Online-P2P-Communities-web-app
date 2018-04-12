@@ -62,6 +62,9 @@ public class AccountBuilder {
         private String eid;
         private String openPassword;
         private Map<String, ReceivedStorkAttribute> attributes;
+        private String msTeamId;
+        private String msTeamsName;
+        private String msTeamsPass;
 
         public SwellrtAccountMngDMO() {
         }
@@ -94,6 +97,9 @@ public class AccountBuilder {
             this.id = builder.getUsername().toLowerCase() + "@local.net";
             this.eid = builder.getEid();
             this.openPassword = builder.getOpenPassword();
+            this.msTeamId = builder.getMsTeamId();
+            this.msTeamsName = builder.getMsTeamsName();
+            this.msTeamsPass = builder.getMsTeamsPass();
         }
 
         public String getId() {
@@ -160,6 +166,30 @@ public class AccountBuilder {
             this.openPassword = openPassword;
         }
 
+        public String getMsTeamId() {
+            return msTeamId;
+        }
+
+        public void setMsTeamId(String msTeamId) {
+            this.msTeamId = msTeamId;
+        }
+
+        public String getMsTeamsName() {
+            return msTeamsName;
+        }
+
+        public void setMsTeamsName(String msTeamsName) {
+            this.msTeamsName = msTeamsName;
+        }
+
+        public String getMsTeamsPass() {
+            return msTeamsPass;
+        }
+
+        public void setMsTeamsPass(String msTeamsPass) {
+            this.msTeamsPass = msTeamsPass;
+        }
+
     }
 
     private String id;
@@ -175,6 +205,9 @@ public class AccountBuilder {
     private String email;
     private String locale;
     private String eid;
+    private String msTeamId;
+    private String msTeamsName;
+    private String msTeamsPass;
 
     public String getId() {
         return id;
@@ -266,6 +299,30 @@ public class AccountBuilder {
 
     public void setOpenPassword(String openPassword) {
         this.openPassword = openPassword;
+    }
+
+    public String getMsTeamId() {
+        return msTeamId;
+    }
+
+    public void setMsTeamId(String msTeamId) {
+        this.msTeamId = msTeamId;
+    }
+
+    public String getMsTeamsName() {
+        return msTeamsName;
+    }
+
+    public void setMsTeamsName(String msTeamsName) {
+        this.msTeamsName = msTeamsName;
+    }
+
+    public String getMsTeamsPass() {
+        return msTeamsPass;
+    }
+
+    public void setMsTeamsPass(String msTeamsPass) {
+        this.msTeamsPass = msTeamsPass;
     }
 
 }

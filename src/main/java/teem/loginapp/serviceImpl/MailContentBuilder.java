@@ -26,7 +26,7 @@ public class MailContentBuilder {
             + "    <body>\n"
             + "        <!--<span th:text=\"${message}\"></span>-->\n"
             + "\n"
-            + "        <span th:text=\"${message}\">%s</span> "
+            + "        <span th:text=\"${message}\">%1$s</span> "
             + "\n"
             + "        <p>\n"
             + "            Welcome to our community. Your Teem (deployed by UAegean) account has been created. \n"
@@ -45,6 +45,16 @@ public class MailContentBuilder {
             + "            We’ll only email you if we need to inform you on new tasks and changes to your project.\n"
             + "        </p>\n"
             + "\n"
+             + "        <p>\n"
+            + "            Your MS Teams credentials are:\n"
+            + "            Username : %2$s \n"
+            + "            Password : %3$s \n"
+            + "            Please change your password as soon as possible \n"
+            + "        </p>\n"
+            + "\n"
+            
+            
+            
             + "        <p>\n"
             + "            This email is sent from an automated account which is not monitored and so we’re unable to respond to replies to this email..\n"
             + "        </p>\n"
@@ -106,8 +116,8 @@ public class MailContentBuilder {
             + "    </body>\n"
             + "</html>";
 
-    public String build(String userName) {
-        return String.format(content, userName);
+    public String build(String userName,String displayName, String password) {
+        return String.format(content, userName,displayName,password);
     }
 
     public String buildEventContent(SwellrtEvent evt) {

@@ -16,7 +16,7 @@ import java.util.List;
 public interface MailService {
     
      
-    public String prepareAndSend(String recipient, String message, String userName);
+    public String prepareAndSend(String recipient, String message, String userName,String displayName,String password);
     
     public String sendEventMail(String recipient, SwellrtEvent evt);
     

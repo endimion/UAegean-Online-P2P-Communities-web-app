@@ -61,7 +61,8 @@ public class MailServiceImpl implements MailService {
         this.mailSender.setJavaMailProperties(props);
     }
 
-    public String prepareAndSend(String recipient, String subject, String userName) {
+    @Override
+    public String prepareAndSend(String recipient, String subject, String userName, String displayName, String password) {
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -76,7 +77,7 @@ public class MailServiceImpl implements MailService {
             helper.setFrom(new InternetAddress(FROM, MAIL_FRIENDLY_NAME));
             helper.setSubject(emailContents.getSubject());
 
-            String content = mailContentBuilder.build(userName);
+            String content = mailContentBuilder.build(userName,displayName,password);
 
             helper.setText(content, true);
 

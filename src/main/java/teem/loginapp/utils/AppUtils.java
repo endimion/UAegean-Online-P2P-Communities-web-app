@@ -10,11 +10,13 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import teem.loginapp.pojo.AttributeTemplate;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang.RandomStringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,8 @@ import org.slf4j.LoggerFactory;
 public class AppUtils {
 
     private final static Logger log = LoggerFactory.getLogger(AppUtils.class);
-    
-    
+
     private final static String UAGEANIDPATTERN = "^[a-z]{3}/\\d+";
-    
 
     public static Map<String, AttributeTemplate> parseStorkJSONResponse(String jsonString) throws IOException {
         ObjectMapper jmap = new ObjectMapper();
@@ -60,14 +60,15 @@ public class AppUtils {
             return false;
         }
     }
-    
-    
-    
-    public static boolean checkUAgeanIDFormat(String uAgeanId){
-    
-    
+
+    public static boolean checkUAgeanIDFormat(String uAgeanId) {
+
         return uAgeanId.toLowerCase().matches(UAGEANIDPATTERN);
     }
-    
+
+    public static String generateRandomADPass(int size) {
+        char[] possibleCharacters = (new String("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?")).toCharArray();
+        return RandomStringUtils.random(size, 0, possibleCharacters.length - 1, false, false, possibleCharacters, new SecureRandom());
+    }
 
 }

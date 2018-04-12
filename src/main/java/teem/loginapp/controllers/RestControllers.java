@@ -50,9 +50,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import teem.loginapp.pojo.ADResponse;
 import teem.loginapp.pojo.IssErrorResponse;
+import teem.loginapp.service.ActiveDirectoryService;
 import teem.loginapp.service.PropertiesService;
 import teem.loginapp.utils.IssErrorMapper;
+import teem.loginapp.utils.Translator;
 
 /**
  *
@@ -83,6 +86,9 @@ public class RestControllers {
 
     @Autowired
     private PropertiesService props;
+
+    @Autowired
+    private ActiveDirectoryService adServ;
 
     private final String token = "95901e5b61fd7c4f5f952927347f0994d0e22a3166bf7c90fb0287e8b87058fa";
 
@@ -158,8 +164,14 @@ public class RestControllers {
 
             response.setToken(token);
             String email = AppUtils.getEmailFromToken(token);
-
             SwellrtAccountMngDMO account = Wrappers.wrapStorkResponseToSwellrtAccount(response, attributeService);
+            //Add user to MSTeams
+            String givenName = Translator.translateGreekWordToEnglishAlphaBet(account.getAttributes().get("CurrentGivenName").getValue());
+            String surname = Translator.translateGreekWordToEnglishAlphaBet(account.getAttributes().get("CurrentFamilyName").getValue());
+            String displayName = givenName + surname;
+            String mailNick = displayName;
+            String principalName = account.getAttributes().get("PersonIdentifier").getValue().replace("/", "").replace("-", "");
+            String password = AppUtils.generateRandomADPass(8);
             if (!StringUtils.isEmpty(email)) {
                 account.getHuman().setEmail(email);
                 StringBuilder userNameBuilder = new StringBuilder();
@@ -176,20 +188,31 @@ public class RestControllers {
                         .append(" ")
                         .append(lastName);
 
-                mailserv.prepareAndSend(email, REGISTER_SUBJECT, userNameBuilder.toString());
+                mailserv.prepareAndSend(email, REGISTER_SUBJECT, userNameBuilder.toString(), displayName, password);
             } else {
                 //if no email is found then the user must allready be registed!
                 if (accountService.findByEid(account.getEid()) == null) {
-                    return new ResponseForStork(false);
+                    return new ResponseForStork(true);
                 }
             }
 
             if (account.getLocalPassword() == null) {
                 account.setLocalPassword("");
             }
-            accountService.saveOrUpdate(account);
+            //Add user to MSTeams
+            ADResponse resp = adServ.createUser(displayName, mailNick, givenName, surname, principalName, password);
 
-            return new ResponseForStork(true);
+            if (resp.getId() != null) {
+                account.setMsTeamId(resp.getId());
+                account.setMsTeamsName(principalName);
+                account.setMsTeamsPass(password);
+                accountService.saveOrUpdate(account);
+                return new ResponseForStork(true);
+            } else {
+                LOG.info("Error from AD service. Id:  " + resp.getId() + " Status: " + resp.getStatus());
+                return new ResponseForStork(false);
+            }
+
         } catch (IOException e) {
             LOG.error("Error parsing JSON", e);
             return new ResponseForStork(false);
@@ -342,7 +365,7 @@ public class RestControllers {
     @RequestMapping(value = "/getParticipants", method = {RequestMethod.GET})
     public @ResponseBody
     Callable<List<String>> getParticipants(@RequestParam(value = "token", required = false) String token,
-            @RequestParam(value = "projectId", required = false)  String projectId,
+            @RequestParam(value = "projectId", required = false) String projectId,
             HttpServletRequest request) {
 
         Callable<List<String>> response = () -> {
@@ -361,7 +384,7 @@ public class RestControllers {
                 resp.add("Account is not valid");
                 return resp;
             }
-            return projectServ.getParticipantsIfPromoter(projectId,account.getId());
+            return projectServ.getParticipantsIfPromoter(projectId, account.getId());
         };
 
         return response;
