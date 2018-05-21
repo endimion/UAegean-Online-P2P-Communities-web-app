@@ -19,6 +19,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/${css}">
+        <link rel="icon"
+              type="image/x-icon"
+              href="favicon.ico">
 
         <!- Overide the sidebar css -->
         <style>
@@ -43,17 +46,17 @@
                         <div class="container" style="width:90%">
 
 
-                            <div class="row breadCrumbs">
-                                STEP | <b>RETURN</b>
-                            </div>
+<!--                            <div class="row breadCrumbs">
+                                REASON | <b> ${errorType}</b>
+                            </div>-->
                             <!--<div class="container">-->
                             <div class="row instructions">
                                 <div class="col s12 flow-text hide-on-large-only">
-                                    <h4>Error processing request.</h4>
+                                    <h5>${title}</h5>
                                     ${errorMsg}
                                 </div>
                                 <div class="col s12 hide-on-med-and-down ">
-                                    <h4>Error processing request.</h4>
+                                    <h5>${title}</h5>
                                     ${errorMsg}
                                 </div>
                             </div>

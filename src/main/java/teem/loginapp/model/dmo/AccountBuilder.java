@@ -62,9 +62,15 @@ public class AccountBuilder {
         private String eid;
         private String openPassword;
         private Map<String, ReceivedStorkAttribute> attributes;
-        private String msTeamId;
-        private String msTeamsName;
-        private String msTeamsPass;
+
+        private String azureId;
+        private String principalName;
+        private String azurePassword;
+        private String nativeCurrentGivenName;
+        private String nativeFamilyGivenName;
+        private String engCurrentGivenName;
+        private String engCurrentFamilyName;
+        private String aegeanId;
 
         public SwellrtAccountMngDMO() {
         }
@@ -81,25 +87,33 @@ public class AccountBuilder {
             this.token = builder.getToken();
             this.attributes = new HashMap();
             this.timestamp = builder.getTimestamp();
-            builder.getAttributes().stream().forEach(attribute -> {
-                if (attribute.geteIDASName() != null) {
-                    String attributeName = attribute.geteIDASName()
-                            .replace("http://eidas.europa.eu/attributes/naturalperson/representative/", "")
-                            .replace("http://eidas.europa.eu/attributes/legalperson/representative/", "")
-                            .replace("http://eidas.europa.eu/attributes/naturalperson/", "")
-                            .replace("http://eidas.europa.eu/attributes/legalperson/", "");
-                    attributes.put(attributeName, attribute);
-                } else {
-                    attributes.put(attribute.getStorkName(), attribute);
-                }
+            if (builder.getAttributes() != null) {
+                builder.getAttributes().stream().forEach(attribute -> {
+                    if (attribute.geteIDASName() != null) {
+                        String attributeName = attribute.geteIDASName()
+                                .replace("http://eidas.europa.eu/attributes/naturalperson/representative/", "")
+                                .replace("http://eidas.europa.eu/attributes/legalperson/representative/", "")
+                                .replace("http://eidas.europa.eu/attributes/naturalperson/", "")
+                                .replace("http://eidas.europa.eu/attributes/legalperson/", "");
+                        attributes.put(attributeName, attribute);
+                    } else {
+                        attributes.put(attribute.getStorkName(), attribute);
+                    }
+                });
+            }
 
-            });
             this.id = builder.getUsername().toLowerCase() + "@local.net";
             this.eid = builder.getEid();
             this.openPassword = builder.getOpenPassword();
-            this.msTeamId = builder.getMsTeamId();
-            this.msTeamsName = builder.getMsTeamsName();
-            this.msTeamsPass = builder.getMsTeamsPass();
+            this.azureId = builder.getMsTeamId();
+            this.principalName = builder.getMsTeamsName();
+            this.azurePassword = builder.getMsTeamsPass();
+
+            this.nativeCurrentGivenName = builder.getNativeCurrentGivenName();
+            this.nativeFamilyGivenName = builder.getNativeFamilyGivenName();
+            this.engCurrentFamilyName = builder.getEngCurrentFamilyName();
+            this.engCurrentGivenName = builder.getEngCurrentGivenName();
+            this.aegeanId = builder.getAegeanId();
         }
 
         public String getId() {
@@ -167,27 +181,91 @@ public class AccountBuilder {
         }
 
         public String getMsTeamId() {
-            return msTeamId;
+            return azureId;
         }
 
         public void setMsTeamId(String msTeamId) {
-            this.msTeamId = msTeamId;
+            this.azureId = msTeamId;
         }
 
         public String getMsTeamsName() {
-            return msTeamsName;
+            return principalName;
         }
 
         public void setMsTeamsName(String msTeamsName) {
-            this.msTeamsName = msTeamsName;
+            this.principalName = msTeamsName;
         }
 
         public String getMsTeamsPass() {
-            return msTeamsPass;
+            return azurePassword;
         }
 
         public void setMsTeamsPass(String msTeamsPass) {
-            this.msTeamsPass = msTeamsPass;
+            this.azurePassword = msTeamsPass;
+        }
+
+        public String getAzureId() {
+            return azureId;
+        }
+
+        public void setAzureId(String azureId) {
+            this.azureId = azureId;
+        }
+
+        public String getPrincipalName() {
+            return principalName;
+        }
+
+        public void setPrincipalName(String principalName) {
+            this.principalName = principalName;
+        }
+
+        public String getAzurePassword() {
+            return azurePassword;
+        }
+
+        public void setAzurePassword(String azurePassword) {
+            this.azurePassword = azurePassword;
+        }
+
+        public String getNativeCurrentGivenName() {
+            return nativeCurrentGivenName;
+        }
+
+        public void setNativeCurrentGivenName(String nativeCurrentGivenName) {
+            this.nativeCurrentGivenName = nativeCurrentGivenName;
+        }
+
+        public String getNativeFamilyGivenName() {
+            return nativeFamilyGivenName;
+        }
+
+        public void setNativeFamilyGivenName(String nativeFamilyGivenName) {
+            this.nativeFamilyGivenName = nativeFamilyGivenName;
+        }
+
+        public String getEngCurrentGivenName() {
+            return engCurrentGivenName;
+        }
+
+        public void setEngCurrentGivenName(String engCurrentGivenName) {
+            this.engCurrentGivenName = engCurrentGivenName;
+        }
+
+        public String getEngCurrentFamilyName() {
+            return engCurrentFamilyName;
+        }
+
+        public void setEngCurrentFamilyName(String engCurrentFamilyName) {
+            this.engCurrentFamilyName = engCurrentFamilyName;
+        }
+
+        public String getAegeanId() {
+            return aegeanId;
+        }
+
+        public void setAegeanId(String aegeanId) {
+            this.aegeanId = aegeanId;
         }
 
     }
@@ -205,9 +283,16 @@ public class AccountBuilder {
     private String email;
     private String locale;
     private String eid;
-    private String msTeamId;
-    private String msTeamsName;
-    private String msTeamsPass;
+
+    //
+    private String azureId;
+    private String userPrincipal;
+    private String azurePass;
+    private String nativeCurrentGivenName;
+    private String nativeFamilyGivenName;
+    private String engCurrentGivenName;
+    private String engCurrentFamilyName;
+    private String aegeanId;
 
     public String getId() {
         return id;
@@ -302,27 +387,91 @@ public class AccountBuilder {
     }
 
     public String getMsTeamId() {
-        return msTeamId;
+        return azureId;
     }
 
     public void setMsTeamId(String msTeamId) {
-        this.msTeamId = msTeamId;
+        this.azureId = msTeamId;
     }
 
     public String getMsTeamsName() {
-        return msTeamsName;
+        return userPrincipal;
     }
 
     public void setMsTeamsName(String msTeamsName) {
-        this.msTeamsName = msTeamsName;
+        this.userPrincipal = msTeamsName;
     }
 
     public String getMsTeamsPass() {
-        return msTeamsPass;
+        return azurePass;
     }
 
     public void setMsTeamsPass(String msTeamsPass) {
-        this.msTeamsPass = msTeamsPass;
+        this.azurePass = msTeamsPass;
+    }
+
+    public String getAzureId() {
+        return azureId;
+    }
+
+    public void setAzureId(String azureId) {
+        this.azureId = azureId;
+    }
+
+    public String getUserPrincipal() {
+        return userPrincipal;
+    }
+
+    public void setUserPrincipal(String userPrincipal) {
+        this.userPrincipal = userPrincipal;
+    }
+
+    public String getAzurePass() {
+        return azurePass;
+    }
+
+    public void setAzurePass(String azurePass) {
+        this.azurePass = azurePass;
+    }
+
+    public String getNativeCurrentGivenName() {
+        return nativeCurrentGivenName;
+    }
+
+    public void setNativeCurrentGivenName(String nativeCurrentGivenName) {
+        this.nativeCurrentGivenName = nativeCurrentGivenName;
+    }
+
+    public String getNativeFamilyGivenName() {
+        return nativeFamilyGivenName;
+    }
+
+    public void setNativeFamilyGivenName(String nativeFamilyGivenName) {
+        this.nativeFamilyGivenName = nativeFamilyGivenName;
+    }
+
+    public String getEngCurrentGivenName() {
+        return engCurrentGivenName;
+    }
+
+    public void setEngCurrentGivenName(String engCurrentGivenName) {
+        this.engCurrentGivenName = engCurrentGivenName;
+    }
+
+    public String getEngCurrentFamilyName() {
+        return engCurrentFamilyName;
+    }
+
+    public void setEngCurrentFamilyName(String engCurrentFamilyName) {
+        this.engCurrentFamilyName = engCurrentFamilyName;
+    }
+
+    public String getAegeanId() {
+        return aegeanId;
+    }
+
+    public void setAegeanId(String aegeanId) {
+        this.aegeanId = aegeanId;
     }
 
 }

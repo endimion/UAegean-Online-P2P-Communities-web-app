@@ -6,7 +6,6 @@
 package teem.loginapp.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import teem.loginapp.model.dmo.AccountBuilder.SwellrtAccountMngDMO;
 import teem.loginapp.model.dmo.StrokAttributesMongoDMO;
 import teem.loginapp.pojo.ReceivedStorkAttribute;
@@ -50,7 +49,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import teem.loginapp.pojo.ADResponse;
 import teem.loginapp.pojo.IssErrorResponse;
 import teem.loginapp.service.ActiveDirectoryService;
 import teem.loginapp.service.PropertiesService;
@@ -133,45 +131,45 @@ public class RestControllers {
 
             if (responseString.trim().equals("{}") || StringUtils.isEmpty(responseString.trim())
                     || (responseString.contains("StatusCode") && responseString.contains("StatusMessage"))) {
-//                LOG.info("Error Response");
+                LOG.info("Error Response");
                 if (responseString.contains("StatusCode") && responseString.contains("StatusMessage")) {
                     IssErrorResponse err = IssErrorMapper.wrapErrorToObject(responseString);
-//                    LOG.info("Error Message: " + err.getStatusMessage().getValue());
-//                    LOG.info("Error Code: " + err.getStatusCode().getValue());
+                    LOG.info("Error Message: " + err.getStatusMessage().getValue());
+                    LOG.info("Error Code: " + err.getStatusCode().getValue());
                     LOG.info(err.getStatusCode().getValue());
-                    if (err.getStatusCode().getValue().contains("202002") || err.getStatusCode().getValue().contains("202003")
-                            || err.getStatusCode().getValue().contains("202005") || err.getStatusCode().getValue().contains("202011")
-                            || err.getStatusCode().getValue().contains("202013") || err.getStatusCode().getValue().contains("202015")
-                            || err.getStatusCode().getValue().contains("202016") || err.getStatusCode().getValue().contains("202017")) {
 
-                        cacheManager.getCache("errors").put(token, EIDAS_CON_ERROR);
-                    }
-                    if (err.getStatusCode().getValue().contains("202007") || err.getStatusCode().getValue().contains("202012")) {
+                    if (err.getStatusMessage().getValue().contains("202007") || err.getStatusMessage().getValue().contains("202012")) {
                         cacheManager.getCache("errors").put(token, EIDAS_CONSENT_ERROR);
                     }
-                    if (err.getStatusCode().getValue().contains("202004")) {
+                    if (err.getStatusMessage().getValue().contains("202004")) {
                         cacheManager.getCache("errors").put(token, EIDAS_QAA_ERROR);
                     }
-                    if (err.getStatusCode().getValue().contains("202010")) {
+                    if (err.getStatusMessage().getValue().contains("202010")) {
                         cacheManager.getCache("errors").put(token, EIDAS_MISSING_ATTRIBUTE_ERROR);
                     }
-
                 } else {
                     LOG.info("empry response!!!");
                 }
                 return new ResponseForStork(false);
             }
 
-            response.setToken(token);
             String email = AppUtils.getEmailFromToken(token);
+            //remove trailing "/" if it is part of the token
+            if (token.endsWith("/")) {
+                token = token.substring(0, token.length() - 1);
+            }
+            response.setToken(token);
             SwellrtAccountMngDMO account = Wrappers.wrapStorkResponseToSwellrtAccount(response, attributeService);
+
             //Add user to MSTeams
-            String givenName = Translator.translateGreekWordToEnglishAlphaBet(account.getAttributes().get("CurrentGivenName").getValue());
-            String surname = Translator.translateGreekWordToEnglishAlphaBet(account.getAttributes().get("CurrentFamilyName").getValue());
+            String givenName = account.getAttributes().get("CurrentGivenName") != null
+                    ? Translator.translateGreekWordToEnglishAlphaBet(account.getAttributes().get("CurrentGivenName").getValue()) : null;
+            String surname = account.getAttributes().get("CurrentFamilyName") != null
+                    ? Translator.translateGreekWordToEnglishAlphaBet(account.getAttributes().get("CurrentFamilyName").getValue()) : null;
             String displayName = givenName + surname;
-            String mailNick = displayName;
-            String principalName = account.getAttributes().get("PersonIdentifier").getValue().replace("/", "").replace("-", "");
+//            String principalName = account.getAttributes().get("PersonIdentifier").getValue().replace("/", "").replace("-", "");
             String password = AppUtils.generateRandomADPass(8);
+
             if (!StringUtils.isEmpty(email)) {
                 account.getHuman().setEmail(email);
                 StringBuilder userNameBuilder = new StringBuilder();
@@ -190,29 +188,26 @@ public class RestControllers {
 
                 mailserv.prepareAndSend(email, REGISTER_SUBJECT, userNameBuilder.toString(), displayName, password);
             } else {
-                //if no email is found then the user must allready be registed!
-                if (accountService.findByEid(account.getEid()) == null) {
-                    return new ResponseForStork(true);
+                //uagean users need not provide an email while registering
+                LOG.info("No email found for account with eID" + account.getEid());
+                if (account.getEid().contains("aegean")) {
+                    account.getHuman().setEmail(account.getEid());
+                } else {
+                    //if no email is found then the user must allready be registed!
+                    if (accountService.findByEid(account.getEid()) == null) {
+                        //return ok so that ISS will redirect to the success page and not the fail page
+                        //and will inform the user that no account is found and the need to first register
+                        return new ResponseForStork(true);
+                    }
                 }
             }
 
             if (account.getLocalPassword() == null) {
                 account.setLocalPassword("");
             }
-            //Add user to MSTeams
-            ADResponse resp = adServ.createUser(displayName, mailNick, givenName, surname, principalName, password);
 
-            if (resp.getId() != null) {
-                account.setMsTeamId(resp.getId());
-                account.setMsTeamsName(principalName);
-                account.setMsTeamsPass(password);
-                accountService.saveOrUpdate(account);
-                return new ResponseForStork(true);
-            } else {
-                LOG.info("Error from AD service. Id:  " + resp.getId() + " Status: " + resp.getStatus());
-                return new ResponseForStork(false);
-            }
-
+            accountService.saveOrUpdate(account);
+            return new ResponseForStork(true);
         } catch (IOException e) {
             LOG.error("Error parsing JSON", e);
             return new ResponseForStork(false);
@@ -364,25 +359,29 @@ public class RestControllers {
 
     @RequestMapping(value = "/getParticipants", method = {RequestMethod.GET})
     public @ResponseBody
-    Callable<List<String>> getParticipants(@RequestParam(value = "token", required = false) String token,
+    Callable<String[][]> getParticipants(@RequestParam(value = "token", required = false) String token,
             @RequestParam(value = "projectId", required = false) String projectId,
             HttpServletRequest request) {
 
-        Callable<List<String>> response = () -> {
+        Callable<String[][]> response = () -> {
             ValueWrapper optionalValue = cacheManager.getCache("ips").get(request.getRemoteAddr());
-            List<String> resp = new ArrayList();
+            String[][] errResp = new String[1][1];
+            String[] error = new String[1];
             if (optionalValue == null) {
-                resp.add("UN_AUTHORIZED_IP");
-                return resp;
+                error[0] = "UN_AUTHORIZED_IP";
+                errResp[0] = error;
+                return errResp;
             }
             if (!token.contains(optionalValue.get().toString())) {
-                resp.add("IP_TOKEN_MISSMATCH");
-                return resp;
+                error[0] = "IP_TOKEN_MISSMATCH";
+                errResp[0] = error;
+                return errResp;
             }
             SwellrtAccountMngDMO account = accountService.findByToken(token);
             if (account == null || StringUtils.isEmpty(account.getId())) {
-                resp.add("Account is not valid");
-                return resp;
+                error[0] = "Account is not valid";
+                errResp[0] = error;
+                return errResp;
             }
             return projectServ.getParticipantsIfPromoter(projectId, account.getId());
         };

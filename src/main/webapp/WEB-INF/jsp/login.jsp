@@ -22,6 +22,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/${css}">
+        <link rel="icon"
+              type="image/x-icon"
+              href="favicon.ico">
 
 
         <!- Overide the sidebar css -->
@@ -54,7 +57,7 @@
                         <div class="container" style="width:90%">
 
                             <div class="row breadCrumbs">
-                                <div class="col s12">
+                                <div class="col s12" style="font-size: larger;">
                                     STEP | <b>GO!</b>
                                 </div>
 
@@ -62,32 +65,73 @@
 
                             <div class="row instructions">
                                 <div  class="col s12 flow-text hide-on-large-only">
-                                    <p>By clicking next you will be transfered to the, eID_EU Network  to securely authenticate with this application. <br> 
+                                    <p>
+                                        You will now be directed to the eIDAS Network to securely identify and trustly 
+                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a  href="#modal1">HERE</a>
+                                    </p>
+
+                                    <p> 
+                                        The eIDAS Network will provide us with those attributes from the attribute provider you will suggest (eID-EU)
+                                    </p>
+
+                                    <p>
+                                        The eIDAS Network will request your consent before sending us any information
                                     </p>
                                     <p>
-                                        Please recall, that using the eID_EU Network  you trustly provide us your identity attributes such as name, address,
-                                        etc. <br>
-                                        The eID_EU Network will provide us with those attributes from the attribute providers you suggest. <br>
-                                        The eID_EU Network will request your consent before sending us any information. <br></p>
-
-                                    After authorization you will be redirected to our service.<br>
-                                    <p>To review the identification attributes that will be requested by eID_EU click 
-                                        <a  href="#modal1">HERE</a>
+                                        After successful authentication you will be redirected to our service
                                     </p>
+
+                                    <p> <span style="color:#446eff;font-weight: bold;">Only for UAegean</span> students | faculty | staff  
+                                        Alternatively, Identify via your UAegean credentials 
+                                        <a  style="cursor: pointer;" onclick="onNextClickUAegean()">HERE</a>
+                                    </p>
+                                    
+                                    <c:if test = "${linkedIn == true}">
+                                        <p > 
+                                            <!--<span style="color:#446eff;font-weight: bold;"></span>-->
+                                            Finally, it is possible to identify via LinkedIn, 
+                                            <img  onclick="linkedInClick()" 
+                                                  src='img/linkedIn.png'
+                                                  style="
+                                                  cursor: pointer;
+                                                  width:11rem"/>
+                                        </p>
+                                    </c:if>
                                 </div>
                                 <div  class="col s12  hide-on-med-and-down ">
-                                    <p>By clicking next you will be transfered to the eID_EU Network  to securely authenticate with this application. <br> 
+                                    <p>
+                                        You will now be directed to the eIDAS Network to securely identify and trustly 
+                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a  href="#modal1">HERE</a>
+                                    </p>
+
+                                    <p> 
+                                        The eIDAS Network will provide us with those attributes from the attribute provider you will suggest (eID-EU)
+                                    </p>
+
+                                    <p>
+                                        The eIDAS Network will request your consent before sending us any information
                                     </p>
                                     <p>
-                                        Please recall, that using the eID_EU Network you trustly provide us your identity attributes such as name, address,
-                                        etc. <br>
-                                        The eID_EU Network will provide us with those attributes from the attribute providers you suggest. <br>
-                                        The eID_EU Network will request your consent before sending us any information. <br></p>
-
-                                    After authorization you will be redirected to our service.<br>
-                                    <p>To review the identification attributes that will be requested by eID_EU click 
-                                        <a  href="#modal1">HERE</a>
+                                        After successful authentication you will be redirected to our service
                                     </p>
+
+                                    <p> <span style="color:#446eff;font-weight: bold;">Only for UAegean</span> students | faculty | staff  
+                                        Alternatively, Identify via your UAegean credentials 
+                                        <a  style="cursor: pointer;" onclick="onNextClickUAegean()">HERE</a>
+                                    </p>
+
+                                    <c:if test = "${linkedIn == true}">
+                                        <p > 
+                                            <!--<span style="color:#446eff;font-weight: bold;"></span>-->
+                                            Finally, it is possible to identify via LinkedIn, 
+                                            <img  onclick="linkedInClick()" 
+                                                  src='img/linkedIn.png'
+                                                  style="
+                                                  cursor: pointer;
+                                                  width:11rem"/>
+                                        </p>
+                                    </c:if>
+
                                 </div>
                             </div>
 
@@ -193,14 +237,31 @@
                                                         + "&cc=" + country + "&saml=${samlType}";
                                             }
                                             window.location = location;
+                                        }
 
-
+                                        function onNextClickUAegean() {
+                                            let location = "http://eidasiss.aegean.gr:8081/ISS2/ldap.jsp?t=${token}" + "&sp=${sp}";
+                                            window.location = location;
                                         }
 
                                         function onCancelClick() {
                                             let token = "${token}";
-                                            window.location = "authfail";
+                                            window.location = "authfail?reason=disagree";
                                         }
+
+                                        function linkedInClick() {
+                                            let clientId = "${clientID}";
+                                            let redirectURI = "${redirectURI}";
+                                            let responseType = "${responseType}";
+                                            let state = "${state}";
+                                            let location = "https://www.linkedin.com/oauth/v2/authorization?"
+                                                    + "response_type=" + responseType
+                                                    + "&client_id=" + clientId
+                                                    + "&redirect_uri=" + redirectURI
+                                                    + "&state=" + state;
+                                            window.location = location;
+                                        }
+
         </script>
     </body>
 </html>

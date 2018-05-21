@@ -20,7 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import teem.loginapp.pojo.ADResponse;
@@ -69,7 +68,8 @@ public class ActiveDirectoryServiceImpl implements ActiveDirectoryService {
     }
 
     @Override
-    public ADResponse createUser(String displayName, String mailNickname, String givenName, String surname, String userPrincipalName, String password) throws MalformedURLException, IOException {
+    public ADResponse createUser(String displayName, String mailNickname, String givenName, String surname, 
+            String userPrincipalName, String password, String eId) throws MalformedURLException, IOException {
         String url = adMicroUrl + "/createUser";
 
         Map<String, Object> params = new LinkedHashMap<>();
@@ -79,6 +79,7 @@ public class ActiveDirectoryServiceImpl implements ActiveDirectoryService {
         params.put("surname", surname);
         params.put("userPrincipalName", userPrincipalName);
         params.put("password", password);
+        params.put("eId",eId);
         String response = writeParamsAndSendPost(params, url);
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper.readValue(response.toString(), ADResponse.class);

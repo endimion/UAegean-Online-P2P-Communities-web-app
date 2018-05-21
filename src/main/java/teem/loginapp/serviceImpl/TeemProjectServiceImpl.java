@@ -38,7 +38,7 @@ public class TeemProjectServiceImpl implements TeemProjectService {
     }
 
     @Override
-    public List<String> getParticipantsIfPromoter(String waveId, String promoter) {
+    public String[][] getParticipantsIfPromoter(String waveId, String promoter) {
         TeemProject proj = repo.findByWaveId(waveId);
         LOG.info("will serach " + waveId + " promoter " + promoter);
         if (proj != null) {
@@ -57,8 +57,13 @@ public class TeemProjectServiceImpl implements TeemProjectService {
                         && !StringUtils.isEmpty(account.getHuman().getEmail());
             }).map(account -> {
                 LOG.info("Email  " + account.getHuman().getEmail());
-                return account.getHuman().getEmail();
-            }).collect(Collectors.toList());
+                String[] res = new String[3];
+                res[0] = account.getAttributes().get("CurrentGivenName").getValue();
+                res[1] = account.getAttributes().get("CurrentFamilyName").getValue();
+                res[2] = account.getHuman().getEmail();
+                return res;
+           
+            }).collect(Collectors.toList()).toArray(new String[proj.getParticipants().size()][3]);
 
         } else {
             return null;

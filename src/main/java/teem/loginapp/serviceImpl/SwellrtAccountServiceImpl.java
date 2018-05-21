@@ -49,23 +49,14 @@ public class SwellrtAccountServiceImpl implements SwellrtAccountService {
             account = overWriteWithOldValue(oldAccount,account,"CurrentAddress");
             account = overWriteWithOldValue(oldAccount,account,"Gender");
             account = overWriteWithOldValue(oldAccount,account,"PlaceOfBirth");
-            
-//            if (oldAccount.getAttributes().get("CurrentAddress") != null
-//                    && !StringUtils.isEmpty(oldAccount.getAttributes().get("CurrentAddress").getValue())) {
-//                account.getAttributes().put("CurrentAddress", oldAccount.getAttributes().get("CurrentAddress"));
-//            }
-//            if (oldAccount.getAttributes().get("Gender") != null
-//                    && !StringUtils.isEmpty(oldAccount.getAttributes().get("Gender").getValue())) {
-//                account.getAttributes().put("Gender", oldAccount.getAttributes().get("Gender"));
-//            }
-//            
-            
+
             LOG.info(" FOUND EMAIL " + oldAccount.getHuman().getEmail());
             //overwrite the value of the e-mail value if null
             if(!StringUtils.isEmpty(oldAccount.getHuman().getEmail())){
                 account.getHuman().setEmail(oldAccount.getHuman().getEmail());
             }
         }
+        LOG.info("Will store account with token " + account.getToken());
         accountRepo.save(account);
     }
 

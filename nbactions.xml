@@ -79,6 +79,10 @@
                 <netbeans.deploy.debugmode>true</netbeans.deploy.debugmode>
                 <netbeans.deploy>true</netbeans.deploy>
                 <skipTests>true</skipTests>
+                <Env.REDIRECT_URL>http://communities-i4mlab.aegean.gr:8080/loginapp/linkedInResponse</Env.REDIRECT_URL>
+                <Env.CLIENT_ID>8607tp476lbh03</Env.CLIENT_ID>
+                <Env.LINKED_IN_SECRET>XqtSkhTaD0VhiFIh</Env.LINKED_IN_SECRET>
+                <Env.LINKED_IN>true</Env.LINKED_IN>
             </properties>
         </action>
         <action>

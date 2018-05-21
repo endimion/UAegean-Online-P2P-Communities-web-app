@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row">
                 <div class="col s12">
-                    <h4>Which attributes will be requested</h4>
+                    <h5>Which attributes will be requested</h5>
                 </div>
 
             </div>

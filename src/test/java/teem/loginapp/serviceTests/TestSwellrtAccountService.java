@@ -24,6 +24,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import teem.loginapp.model.dao.StorkAttributeMngRepository;
+import teem.loginapp.model.dao.StorkAttributesDAO;
+import teem.loginapp.model.dao.TeemProjectsRepo;
 
 /**
  *
@@ -45,8 +48,24 @@ public class TestSwellrtAccountService {
         public SwellrtAccountRepository accountRepository() {
             return Mockito.mock(SwellrtAccountRepository.class);
         }
+
+        @Bean
+        public StorkAttributesDAO attrDAO() {
+            return Mockito.mock(StorkAttributesDAO.class);
+        }
         
+        @Bean
+        public StorkAttributeMngRepository attrMongo(){
+            return Mockito.mock(StorkAttributeMngRepository.class);
+        }
+        
+        @Bean
+        public SwellrtAccountService saccountSert(){
+            return Mockito.mock(SwellrtAccountService.class);
+        }
     }
+    
+    
 
     //We Autowired the AccountService bean so that it is injected from the configuration
     @Autowired

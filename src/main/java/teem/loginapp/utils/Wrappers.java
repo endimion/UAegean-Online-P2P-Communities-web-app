@@ -5,6 +5,8 @@
  */
 package teem.loginapp.utils;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import teem.loginapp.model.dmo.AccountBuilder;
 import teem.loginapp.model.dmo.PersonSqlDMO;
 import teem.loginapp.model.dmo.StorkAttributeValueMongoDMO;
@@ -31,12 +33,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import teem.loginapp.pojo.LinkedInUser;
 
 /**
  *
@@ -45,6 +49,8 @@ import org.slf4j.LoggerFactory;
 public class Wrappers {
 
     private final static Logger log = LoggerFactory.getLogger(Wrappers.class);
+
+    private static String IS_LATIN = "[\\p{Punct}\\p{Space}\\p{IsLatin}]+$";
 
     @Deprecated
     public static PersonSqlDMO wrapStorkResponseToEidDMO(StorkResponse response, StorkAttributeService attrServ) {
@@ -181,6 +187,27 @@ public class Wrappers {
         return attr;
     }
 
+    public static AccountBuilder.SwellrtAccountMngDMO wrapLinkedInResponseToAccount(String linkedInResponse) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        LinkedInUser user = mapper.readValue(linkedInResponse, LinkedInUser.class);
+        AccountBuilder ac = new AccountBuilder();
+        ac.setEid(user.getId());
+        ac.setEmail(user.getEmailAddress());
+        ac.setEngCurrentFamilyName(user.getLastName());
+        ac.setEngCurrentGivenName(user.getFirstName());
+        ac.setNativeCurrentGivenName(user.getFirstName());
+        ac.setNativeFamilyGivenName(user.getLastName());
+        String pass = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        ac.setOpenPassword(pass);
+        ac.setPassword(pass);
+        ac.setUsername(user.getFirstName()+"_"+user.getLastName());
+        
+
+        return ac.build();
+    }
+
     public static AccountBuilder.SwellrtAccountMngDMO wrapStorkResponseToSwellrtAccount(StorkResponse response,
             StorkAttributeService attrServ) {
         AccountBuilder builder = new AccountBuilder();
@@ -218,6 +245,9 @@ public class Wrappers {
                 values.add(attr);
             }
 
+            if (v.getValue().contains("@aegean.gr")) {
+                builder.setAegeanId(v.getValue());
+            }
             if (k.equals("eIdentifier") || k.toLowerCase().contains("personidentifier")) {
                 builder.setEid(v.getValue());
             }
@@ -227,13 +257,53 @@ public class Wrappers {
             if (k.equals("surname") || k.toLowerCase().contains("currentfamilyname")) {
                 surname.append(v.getValue());
             }
-
         });
 
+        String engGiveName = "";
+        String engFamilyName = "";
+        if (!(name.toString().matches(IS_LATIN) && surname.toString().matches(IS_LATIN))) {
+            //non latin found in namae or surname
+            engGiveName = name.toString().split(",").length > 1 ? name.toString().split(",")[1].trim() : "";
+            engFamilyName = surname.toString().split(",").length > 1 ? surname.toString().split(",")[1].trim() : "";
+
+            String natGiveName = name.toString().split(",").length > 1 ? name.toString().split(",")[0].trim() : name.toString();
+            String natFamilyName = surname.toString().split(",").length > 1 ? surname.toString().split(",")[0].trim() : surname.toString();
+            builder.setEngCurrentFamilyName(engFamilyName);
+            builder.setEngCurrentGivenName(engGiveName);
+            builder.setNativeCurrentGivenName(natGiveName);
+            builder.setNativeFamilyGivenName(natFamilyName);
+        } else {
+            builder.setEngCurrentFamilyName(name.toString());
+            builder.setEngCurrentGivenName(surname.toString());
+            builder.setNativeCurrentGivenName("");
+            builder.setNativeFamilyGivenName("");
+        }
+
+        for (ReceivedStorkAttribute attr : values) {
+            log.info("checking" + attr.geteIDASName());
+            if (attr.geteIDASName().toLowerCase().contains("currentgivenname") || attr.getStorkName().toLowerCase().contains("givenname")) {
+                log.info("old givenBame" + attr.getValue());
+                if (!StringUtils.isEmpty(engGiveName)) {
+                    attr.setValue(engGiveName);
+                    log.info("new givenBame" + attr.getValue());
+                }
+            }
+            if (attr.geteIDASName().toLowerCase().contains("currentfamilyname") || attr.getStorkName().toLowerCase().contains("surname")) {
+                if (!StringUtils.isEmpty(engFamilyName)) {
+                    attr.setValue(engFamilyName);
+                }
+            }
+        };
+
         builder.setAttributes(values);
-        builder.setUsername(
-                Translator.translateGreekWordToEnglishAlphaBet(name.append("_").append(surname).toString())
-        );
+
+        if (StringUtils.isEmpty(builder.getEngCurrentFamilyName())) {
+            builder.setUsername(Translator.translateGreekWordToEnglishAlphaBet(builder.getNativeCurrentGivenName()) + "_"
+                    + Translator.translateGreekWordToEnglishAlphaBet(builder.getNativeFamilyGivenName()));
+        } else {
+            builder.setUsername(builder.getEngCurrentGivenName() + "_"
+                    + builder.getEngCurrentFamilyName());
+        }
         String thePass = RandomStringUtils.randomAlphabetic(5).toLowerCase();
         builder.setPassword(thePass);
         builder.setOpenPassword(thePass);
@@ -314,31 +384,39 @@ public class Wrappers {
 
     public static UserCredentials wrapSwellrtAccounttoUserCredentials(AccountBuilder.SwellrtAccountMngDMO account,
             List<StrokAttributesMongoDMO> enabledAttributes) {
-        UserCredentials user = new UserCredentials();
+        UserCredentials creds = new UserCredentials();
         String userName = account.getId().split("@")[0];
-        user.setUsername(userName);
-        user.setPassword(account.getOpenPassword());
-        user.setEmail(account.getHuman().getEmail());
-        user.setStatus("OK");
+        creds.setUsername(userName);
+        creds.setPassword(account.getOpenPassword());
+        creds.setEmail(account.getHuman().getEmail());
+        creds.setStatus("OK");
+
+        creds.setAzureId(account.getAzureId());
+        creds.setAzurePassword(account.getAzurePassword());
+        creds.setEngCurrentFamilyName(account.getEngCurrentFamilyName());
+        creds.setEngCurrentGivenName(account.getEngCurrentGivenName());
+        creds.setNativeCurrentGivenName(account.getNativeCurrentGivenName());
+        creds.setNativeFamilyGivenName(account.getNativeFamilyGivenName());
+        creds.setPrincipalName(account.getPrincipalName());
 
         Map<String, ReceivedStorkAttribute> attributes = account.getAttributes();
-        attributes.forEach((k, v) -> {
-            if (k.toLowerCase().equals("dateofbirth")) {
-                v.setValue(DateUtils.timeStampToddMMyyyy(v.getValue()));
-            }
-        });
+//        attributes.forEach((k, v) -> {
+//            if (k.toLowerCase().equals("dateofbirth")) {
+//                v.setValue(DateUtils.timeStampToddMMyyyy(v.getValue()));
+//            }
+//        });
 
-        user.setAttributes(attributes);
+        creds.setAttributes(attributes);
 
         if (account.getAttributes().get("FirstName") == null) {
-            user.getAttributes().put("FirstName", account.getAttributes().get("CurrentGivenName"));
+            creds.getAttributes().put("FirstName", account.getAttributes().get("CurrentGivenName"));
         }
 
         if (account.getAttributes().get("FamilyName") == null) {
-            user.getAttributes().put("FamilyName", account.getAttributes().get("CurrentFamilyName"));
+            creds.getAttributes().put("FamilyName", account.getAttributes().get("CurrentFamilyName"));
         }
 
-        return addNotReceivedAttributesToCredentials(user, account, enabledAttributes);
+        return addNotReceivedAttributesToCredentials(creds, account, enabledAttributes);
     }
 
     private static UserCredentials addNotReceivedAttributesToCredentials(UserCredentials user,

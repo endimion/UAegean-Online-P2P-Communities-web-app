@@ -16,7 +16,7 @@
                 <div class="col s6 m6 l6 " id="header-logo-aegean">
                     <img id="uAegeanLogo" class="responsive-img" src="img/uaegeanI4m.png" style="margin-top: 0.8em;
                          margin-bottom: 1.5em;
-                         max-height: 75px;float:right;">
+                         max-height: 75px;float:right; margin-right: 16%;">
                 </div>
             </div>    
 
