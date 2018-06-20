@@ -114,6 +114,11 @@ public class SwellrtEvent {
             this.recipients = recipients;
         }
 
+        @Override
+        public String toString() {
+            return "EventData{" + "projId=" + projId + ", summaryText=" + summaryText + ", collapseKey=" + collapseKey + ", context=" + context + ", style=" + style + ", title=" + title + ", message=" + message + ", notId=" + notId + ", recipients=" + recipients + '}';
+        }
+
     }
 
     private String path;
@@ -146,4 +151,10 @@ public class SwellrtEvent {
     public void setWaveid(String waveid) {
         this.waveid = waveid;
     }
+
+    @Override
+    public String toString() {
+        return "SwellrtEvent{" + "path=" + path + ", data=" + data.toString() + ", waveid=" + waveid + '}';
+    }
+
 }

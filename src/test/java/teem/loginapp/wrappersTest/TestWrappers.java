@@ -84,20 +84,11 @@ public class TestWrappers {
         }
     }
 
-    @Autowired
-    private RestControllers restControllers;
-
-    @Autowired
-    private SwellrtAccountService accountService;
-
-    @Autowired
-    private MailService mailserv;
+ 
 
     @Autowired
     private StorkAttributeService attrserv;
-
-    @Autowired
-    private CacheManager cacheManager;
+ 
 
     @Test
     public void testGetAqaaLevel() {

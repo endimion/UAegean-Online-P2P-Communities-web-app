@@ -61,6 +61,15 @@ public class PropertiesServiceImpl implements PropertiesService {
     }
 
     @Override
+    public String getPreNode() {
+        if (Boolean.parseBoolean(this.property.getProperty("useEIDAS"))) {
+            return this.property.getProperty("eidasISSPre.url");
+        } else {
+            return this.property.getProperty("storkISS.url");
+        }
+    }
+
+    @Override
     public String getSP() {
         if (Boolean.parseBoolean(this.property.getProperty("useEIDAS"))) {
             return this.property.getProperty("eidasISS.sp");

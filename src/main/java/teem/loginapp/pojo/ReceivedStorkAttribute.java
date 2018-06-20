@@ -19,6 +19,19 @@ public class ReceivedStorkAttribute {
     private String storkName;
     private String eIDASName;
 
+    public ReceivedStorkAttribute() {
+    }
+
+    public ReceivedStorkAttribute(String value, String requestedLoA, String requestedStorkQAA, String aQAA, String loa, String storkName, String eIDASName) {
+        this.value = value;
+        this.requestedLoA = requestedLoA;
+        this.requestedStorkQAA = requestedStorkQAA;
+        this.aQAA = aQAA;
+        this.loa = loa;
+        this.storkName = storkName;
+        this.eIDASName = eIDASName;
+    }
+
     public String getValue() {
         return value;
     }

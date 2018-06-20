@@ -5,6 +5,8 @@
  */
 package teem.loginapp.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
 import teem.loginapp.model.dao.SwellrtAccountRepository;
 import teem.loginapp.model.dmo.AccountBuilder.SwellrtAccountMngDMO;
 
@@ -21,38 +23,37 @@ import org.springframework.util.StringUtils;
  */
 @Service
 public class SwellrtAccountServiceImpl implements SwellrtAccountService {
-    
+
     private final static Logger LOG = LoggerFactory.getLogger(SwellrtAccountService.class);
 
     @Autowired
     private SwellrtAccountRepository accountRepo;
 
-    
-    /** Saves or Updates the given SwellrtAccount object. 
-        However, in the case of update, it does not change (if found)
-        the existing values of CurrentAddress, Gender,email,UAgeanID, placeOfBirth
-    *   @param account, the SwellrtAccountMngDMO object to be updated
-    */
+    /**
+     * Saves or Updates the given SwellrtAccount object. However, in the case of
+     * update, it does not change (if found) the existing values of
+     * CurrentAddress, Gender,email,UAgeanID, placeOfBirth
+     *
+     * @param account, the SwellrtAccountMngDMO object to be updated
+     */
     @Override
     public void saveOrUpdate(SwellrtAccountMngDMO account) {
 
         SwellrtAccountMngDMO oldAccount = accountRepo.findByEid(account.getEid());
         /**
-         * Values that should be overwritten by existing values
-         * CurrentAddress
-         * Gender 
-         * email
+         * Values that should be overwritten by existing values CurrentAddress
+         * Gender email
          */
         if (oldAccount != null) {
             LOG.info(" FOUND OLD ACCOUNT " + oldAccount.getId());
             //overwrite the value of the received FamilyName value, if it exists
-            account = overWriteWithOldValue(oldAccount,account,"CurrentAddress");
-            account = overWriteWithOldValue(oldAccount,account,"Gender");
-            account = overWriteWithOldValue(oldAccount,account,"PlaceOfBirth");
+            account = overWriteWithOldValue(oldAccount, account, "CurrentAddress");
+            account = overWriteWithOldValue(oldAccount, account, "Gender");
+            account = overWriteWithOldValue(oldAccount, account, "PlaceOfBirth");
 
             LOG.info(" FOUND EMAIL " + oldAccount.getHuman().getEmail());
             //overwrite the value of the e-mail value if null
-            if(!StringUtils.isEmpty(oldAccount.getHuman().getEmail())){
+            if (!StringUtils.isEmpty(oldAccount.getHuman().getEmail())) {
                 account.getHuman().setEmail(oldAccount.getHuman().getEmail());
             }
         }
@@ -70,30 +71,27 @@ public class SwellrtAccountServiceImpl implements SwellrtAccountService {
         return accountRepo.findByEid(eid);
     }
 
-    
-    
-    /** Saves or Updates the given SwellrtAccount object. 
-        However, in the case of update, it does not change (if found)
-        the existing values of FamilyName, FirstName,DateOfBirth, BirthName
-    *   @param account, the SwellrtAccountMngDMO object to be updated
-    */
+    /**
+     * Saves or Updates the given SwellrtAccount object. However, in the case of
+     * update, it does not change (if found) the existing values of FamilyName,
+     * FirstName,DateOfBirth, BirthName
+     *
+     * @param account, the SwellrtAccountMngDMO object to be updated
+     */
     @Override
     public void saveOrUpdateTeemAttributes(SwellrtAccountMngDMO account) {
-        
+
         SwellrtAccountMngDMO oldAccount = accountRepo.findByEid(account.getEid());
         /**
-         *  Values that should be overwritten by existing values
-         * FamilyName
-         * FirstName 
-         * DateOfBirth
-         * BirthName
+         * Values that should be overwritten by existing values FamilyName
+         * FirstName DateOfBirth BirthName
          */
         if (oldAccount != null) {
             LOG.info(" FOUND OLD ACCOUNT " + oldAccount.getId());
             //overwrite the value of the received FamilyName value, if it exists
-            account = overWriteWithOldValue(oldAccount,account,"FamilyName");
-            account = overWriteWithOldValue(oldAccount,account,"DateOfBirth");
-            account = overWriteWithOldValue(oldAccount,account,"BirthName");
+            account = overWriteWithOldValue(oldAccount, account, "FamilyName");
+            account = overWriteWithOldValue(oldAccount, account, "DateOfBirth");
+            account = overWriteWithOldValue(oldAccount, account, "BirthName");
 //            if (oldAccount.getAttributes().get("FamilyName") != null
 //                    && !StringUtils.isEmpty(oldAccount.getAttributes().get("FamilyName").getValue())) {
 //                account.getAttributes().put("FamilyName", oldAccount.getAttributes().get("FamilyName"));
@@ -110,33 +108,32 @@ public class SwellrtAccountServiceImpl implements SwellrtAccountService {
 //                    && !StringUtils.isEmpty(oldAccount.getAttributes().get("BirthName").getValue())) {
 //                account.getAttributes().put("BirthName", oldAccount.getAttributes().get("BirthName"));
 //            }
-            
+
             LOG.info(" FOUND EMAIL " + oldAccount.getHuman().getEmail());
             //overwrite the value of the e-mail value if null
-            if(!StringUtils.isEmpty(oldAccount.getHuman().getEmail()) 
-                    && StringUtils.isEmpty(account.getHuman().getEmail())){
+            if (!StringUtils.isEmpty(oldAccount.getHuman().getEmail())
+                    && StringUtils.isEmpty(account.getHuman().getEmail())) {
                 account.getHuman().setEmail(oldAccount.getHuman().getEmail());
             }
         }
         accountRepo.save(account);
     }
-    
-    
+
     /**
-     * 
+     *
      * @param oldAccount, a SwellrtAccount object retrieved from the database
      * @param newAccount, a received SwellrtAccount object
-     * @param attributeName, the name of the attribute you want to 
-     * @return 
+     * @param attributeName, the name of the attribute you want to
+     * @return
      */
-    private SwellrtAccountMngDMO overWriteWithOldValue(SwellrtAccountMngDMO oldAccount, SwellrtAccountMngDMO newAccount, 
-            String attributeName){
-    
-            if (oldAccount.getAttributes().get(attributeName) != null
-                    && !StringUtils.isEmpty(oldAccount.getAttributes().get(attributeName).getValue())) {
-                newAccount.getAttributes().put(attributeName, oldAccount.getAttributes().get(attributeName));
-            }
-        
+    private SwellrtAccountMngDMO overWriteWithOldValue(SwellrtAccountMngDMO oldAccount, SwellrtAccountMngDMO newAccount,
+            String attributeName) {
+
+        if (oldAccount.getAttributes().get(attributeName) != null
+                && !StringUtils.isEmpty(oldAccount.getAttributes().get(attributeName).getValue())) {
+            newAccount.getAttributes().put(attributeName, oldAccount.getAttributes().get(attributeName));
+        }
+
         return newAccount;
     }
 
@@ -144,6 +141,11 @@ public class SwellrtAccountServiceImpl implements SwellrtAccountService {
     public SwellrtAccountMngDMO findById(String id) {
         return accountRepo.findById(id);
     }
-    
+
+    @Override
+    public List<SwellrtAccountMngDMO> findByFirstAndLast(String firstName, String lastName) {
+        List<SwellrtAccountMngDMO> matches = accountRepo.findByEngCurrentNameAndSurname(firstName, lastName);
+        return matches != null ? matches : new ArrayList();
+    }
 
 }

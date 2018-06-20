@@ -66,110 +66,139 @@
                             <div class="row instructions">
                                 <div  class="col s12 flow-text hide-on-large-only">
                                     <p>
-                                        You will now be directed to the eIDAS Network to securely identify and trustly 
-                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a  href="#modal1">HERE</a>
+                                        <b>Identify with eIDAS eID:</b> You will now be directed to the eIDAS Network to securely identify and trustly 
+                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a href="#modal1">HERE</a>
                                     </p>
-
-                                    <p> 
+                                    <p>
                                         The eIDAS Network will provide us with those attributes from the attribute provider you will suggest (eID-EU)
-                                    </p>
 
-                                    <p>
-                                        The eIDAS Network will request your consent before sending us any information
-                                    </p>
-                                    <p>
+                                        The eIDAS Network will request your consent before sending us any information 
                                         After successful authentication you will be redirected to our service
                                     </p>
+                                    <div class="row">
 
-                                    <p> <span style="color:#446eff;font-weight: bold;">Only for UAegean</span> students | faculty | staff  
-                                        Alternatively, Identify via your UAegean credentials 
-                                        <a  style="cursor: pointer;" onclick="onNextClickUAegean()">HERE</a>
-                                    </p>
-                                    
+                                        <div class="input-field col s12">
+                                            <select id="countrySelection" class="icons">
+                                                <!--<option value="" disabled selected></option>-->
+                                                <c:forEach var="country" items="${countries}">
+                                                    <c:if test = "${country.code == 'GR'}">
+                                                        <option selected value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                                    </c:if>
+                                                    <c:if test = "${country.code != 'GR'}">
+                                                        <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                                    </c:if>
+                                                </c:forEach>
+
+                                            </select>
+                                            <label>Select Your Country of Origin</label>
+                                        </div>
+
+                                        <div class="input-field col s12" style="display:none">
+                                            <select id="typeOfLogin" class="icons" >
+                                                <option value="eIDAS"  >eID_EU Network</option>
+                                                <option value="peps" selected>PEPS</option>    
+                                            </select>
+                                            <label>Select means of identification </label>
+                                        </div>
+
+
+                                        <div class="col s12 m12 l6" style="padding-top: 1rem;">
+                                            <a class="waves-effect waves-light btn swell-btn cancel-btn" onclick="onCancelClick()">Cancel</a>
+                                        </div>
+                                        <div class="col s12 m12 l6" style="padding-top: 1rem;">
+                                            <a id="next" class="waves-effect waves-light btn swell-btn next-btn" onclick="onNextClick()">Next</a>
+                                        </div>
+                                    </div>
+
                                     <c:if test = "${linkedIn == true}">
-                                        <p > 
-                                            <!--<span style="color:#446eff;font-weight: bold;"></span>-->
-                                            Finally, it is possible to identify via LinkedIn, 
-                                            <img  onclick="linkedInClick()" 
-                                                  src='img/linkedIn.png'
-                                                  style="
-                                                  cursor: pointer;
-                                                  width:11rem"/>
-                                        </p>
+                                        <!--<span style="color:#446eff;font-weight: bold;"></span>-->
+                                        <b>Identify with LinkedIn:</b> 
+                                        <img  onclick="linkedInClick()" 
+                                              src='img/linkedIn.png'
+                                              style="
+                                              cursor: pointer;
+                                              width: 14rem;
+                                              margin-left: 1rem;
+                                              vertical-align: bottom;"/>
                                     </c:if>
+
+
+                                    <p> 
+                                        <span style="color:#446eff;font-weight: bold;">Identify with UAegean credentials </span> students | faculty | staff:  
+                                        <a  style="cursor: pointer;margin-left:1rem" onclick="onNextClickUAegean()">Sign in with UAegean Attribute Provider</a>
+                                    </p>
+
+
                                 </div>
                                 <div  class="col s12  hide-on-med-and-down ">
                                     <p>
-                                        You will now be directed to the eIDAS Network to securely identify and trustly 
-                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a  href="#modal1">HERE</a>
+                                        <b>Identify with eIDAS eID:</b> You will now be directed to the eIDAS Network to securely identify and trustly 
+                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a href="#modal1">HERE</a>
                                     </p>
-
-                                    <p> 
+                                    <p>
                                         The eIDAS Network will provide us with those attributes from the attribute provider you will suggest (eID-EU)
-                                    </p>
 
-                                    <p>
-                                        The eIDAS Network will request your consent before sending us any information
-                                    </p>
-                                    <p>
+                                        The eIDAS Network will request your consent before sending us any information 
                                         After successful authentication you will be redirected to our service
                                     </p>
+                                    <div class="row">
 
-                                    <p> <span style="color:#446eff;font-weight: bold;">Only for UAegean</span> students | faculty | staff  
-                                        Alternatively, Identify via your UAegean credentials 
-                                        <a  style="cursor: pointer;" onclick="onNextClickUAegean()">HERE</a>
-                                    </p>
+                                        <div class="input-field col s12">
+                                            <select id="countrySelection2" class="icons">
+                                                <!--<option value="" disabled selected></option>-->
+                                                <c:forEach var="country" items="${countries}">
+                                                    <c:if test = "${country.code == 'GR'}">
+                                                        <option selected value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                                    </c:if>
+                                                    <c:if test = "${country.code != 'GR'}">
+                                                        <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
+                                                    </c:if>
+                                                </c:forEach>
+
+                                            </select>
+                                            <label>Select Your Country of Origin</label>
+                                        </div>
+
+                                        <div class="input-field col s12" style="display:none">
+                                            <select id="typeOfLogin" class="icons" >
+                                                <option value="eIDAS"  >eID_EU Network</option>
+                                                <option value="peps" selected>PEPS</option>    
+                                            </select>
+                                            <label>Select means of identification </label>
+                                        </div>
+
+
+                                        <div class="col s12 m12 l6" style="padding-top: 1rem;">
+                                            <a class="waves-effect waves-light btn swell-btn cancel-btn" onclick="onCancelClick()">Cancel</a>
+                                        </div>
+                                        <div class="col s12 m12 l6" style="padding-top: 1rem;">
+                                            <a id="next" class="waves-effect waves-light btn swell-btn next-btn" onclick="onNextClick()">Next</a>
+                                        </div>
+                                    </div>
 
                                     <c:if test = "${linkedIn == true}">
-                                        <p > 
-                                            <!--<span style="color:#446eff;font-weight: bold;"></span>-->
-                                            Finally, it is possible to identify via LinkedIn, 
-                                            <img  onclick="linkedInClick()" 
-                                                  src='img/linkedIn.png'
-                                                  style="
-                                                  cursor: pointer;
-                                                  width:11rem"/>
-                                        </p>
+                                        <!--<span style="color:#446eff;font-weight: bold;"></span>-->
+                                        <b>Identify with LinkedIn:</b> 
+                                        <img  onclick="linkedInClick()" 
+                                              src='img/linkedIn.png'
+                                              style="
+                                              cursor: pointer;
+                                              width: 14rem;
+                                              margin-left: 1rem;
+                                              vertical-align: bottom;"/>
                                     </c:if>
 
+
+                                    <p> 
+                                        <span style="color:#446eff;font-weight: bold;">Identify with UAegean credentials </span> students | faculty | staff:  
+                                        <a  style="cursor: pointer;margin-left:1rem" onclick="onNextClickUAegean()">Sign in with UAegean Attribute Provider</a>
+                                    </p>
+
                                 </div>
                             </div>
 
 
-                            <div class="row">
 
-                                <div class="input-field col s12">
-                                    <select id="countrySelection" class="icons">
-                                        <!--<option value="" disabled selected></option>-->
-                                        <c:forEach var="country" items="${countries}">
-                                            <c:if test = "${country.code == 'GR'}">
-                                                <option selected value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
-                                            </c:if>
-                                            <c:if test = "${country.code != 'GR'}">
-                                                <option value="${country.code}" data-icon="img/flags/${country.name}_flag.gif" >${fn:toUpperCase(country.name)}</option>
-                                            </c:if>
-                                        </c:forEach>
-
-                                    </select>
-                                    <label>Select Your Country of Origin</label>
-                                </div>
-
-                                <div class="input-field col s12" style="display:none">
-                                    <select id="typeOfLogin" class="icons" >
-                                        <option value="eIDAS"  >eID_EU Network</option>
-                                        <option value="peps" selected>PEPS</option>    
-                                    </select>
-                                    <label>Select means of identification </label>
-                                </div>
-
-
-                                <div class="col s12 m12 l6" style="padding-top: 1rem;">
-                                    <a class="waves-effect waves-light btn swell-btn cancel-btn" onclick="onCancelClick()">Cancel</a>
-                                </div>
-                                <div class="col s12 m12 l6" style="padding-top: 1rem;">
-                                    <a id="next" class="waves-effect waves-light btn swell-btn next-btn" onclick="onNextClick()">Next</a>
-                                </div>
-                            </div>
 
 
                         </div>
@@ -202,65 +231,71 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
         <script>
 
-                                        $(document).ready(function () {
-                                            $('select').material_select();
-                                            // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-                                            $('.modal').modal();
+                                            $(document).ready(function () {
+                                                $('select').material_select();
+                                                // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+                                                $('.modal').modal();
 
-                                            if (!$('#countrySelection').val()) {
-                                                $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
-                                            }
-
-                                            $('#countrySelection').change(function () {
-                                                if (this.vaue !== "") {
-                                                    $('#next').removeClass("disabled").addClass('waves-effect waves-light submit');
-                                                } else {
+                                                if (!$('#countrySelection').val()) {
                                                     $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
                                                 }
 
+                                                $('#countrySelection').change(function () {
+                                                    if (this.vaue !== "") {
+                                                        $('#next').removeClass("disabled").addClass('waves-effect waves-light submit');
+                                                    } else {
+                                                        $('#next').removeClass("waves-effect waves-light submit").addClass('disabled');
+                                                    }
+
+                                                });
                                             });
-                                        });
 
 
-                                        function onNextClick() {
-                                            let country = $("#countrySelection").val();
-                                            let typeOfId = $('#typeOfLogin').val();
-                                            let location = "";
-                                            if (typeOfId === "eIDAS") {
-                                                //                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
-                                                location = "${node}" + "?t=${token}"
-                                                        + "&sp=${sp}"
-                                                        + "&cc=" + country + "&saml=${samlType}";
-                                            } else {
-                                                location = "${node}" + "?t=${token}"
-                                                        + "&sp=${sp}"
-                                                        + "&cc=" + country + "&saml=${samlType}";
+                                            function onNextClick() {
+//                                                let country = $("#countrySelection").val();
+                                                let countrySelector = $("#countrySelection").is(":visible") ? $("#countrySelection") : $("#countrySelection2");
+                                                let country = countrySelector.val();
+                                                let typeOfId = $('#typeOfLogin').val();
+                                                let location = "";
+                                                let iss = "${nodePre}";
+                                                if(country === "GR"){
+                                                    iss = "${node}";
+                                                }
+                                                if (typeOfId === "eIDAS") {
+                                                    //                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
+                                                    location = iss + "?t=${token}"
+                                                            + "&sp=${sp}"
+                                                            + "&cc=" + country + "&saml=${samlType}";
+                                                } else {
+                                                    location = iss+ "?t=${token}"
+                                                            + "&sp=${sp}"
+                                                            + "&cc=" + country + "&saml=${samlType}";
+                                                }
+                                                window.location = location;
                                             }
-                                            window.location = location;
-                                        }
 
-                                        function onNextClickUAegean() {
-                                            let location = "http://eidasiss.aegean.gr:8081/ISS2/ldap.jsp?t=${token}" + "&sp=${sp}";
-                                            window.location = location;
-                                        }
+                                            function onNextClickUAegean() {
+                                                let location = "http://eidasiss.aegean.gr:8081/ISS2/ldap.jsp?t=${token}" + "&sp=${sp}";
+                                                window.location = location;
+                                            }
 
-                                        function onCancelClick() {
-                                            let token = "${token}";
-                                            window.location = "authfail?reason=disagree";
-                                        }
+                                            function onCancelClick() {
+                                                let token = "${token}";
+                                                window.location = "authfail?reason=disagree";
+                                            }
 
-                                        function linkedInClick() {
-                                            let clientId = "${clientID}";
-                                            let redirectURI = "${redirectURI}";
-                                            let responseType = "${responseType}";
-                                            let state = "${state}";
-                                            let location = "https://www.linkedin.com/oauth/v2/authorization?"
-                                                    + "response_type=" + responseType
-                                                    + "&client_id=" + clientId
-                                                    + "&redirect_uri=" + redirectURI
-                                                    + "&state=" + state;
-                                            window.location = location;
-                                        }
+                                            function linkedInClick() {
+                                                let clientId = "${clientID}";
+                                                let redirectURI = "${redirectURI}";
+                                                let responseType = "${responseType}";
+                                                let state = "${state}";
+                                                let location = "https://www.linkedin.com/oauth/v2/authorization?"
+                                                        + "response_type=" + responseType
+                                                        + "&client_id=" + clientId
+                                                        + "&redirect_uri=" + redirectURI
+                                                        + "&state=" + state;
+                                                window.location = location;
+                                            }
 
         </script>
     </body>

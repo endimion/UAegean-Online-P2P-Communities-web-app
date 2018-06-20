@@ -195,6 +195,11 @@ public class Wrappers {
         AccountBuilder ac = new AccountBuilder();
         ac.setEid(user.getId());
         ac.setEmail(user.getEmailAddress());
+        ac.setAttributes(new ArrayList());
+        ac.getAttributes().add(new ReceivedStorkAttribute(user.getLastName(), "low", "1", "1", "low", "surname", "http://eidas.europa.eu/attributes/naturalperson/CurrentFamilyName"));
+        ac.getAttributes().add(new ReceivedStorkAttribute(user.getFirstName(), "low", "1", "1", "low", "givenName", "http://eidas.europa.eu/attributes/naturalperson/CurrentGivenName"));
+        ac.getAttributes().add(new ReceivedStorkAttribute(user.getId(), "low", "1", "1", "low", "eIdentifier", "http://eidas.europa.eu/attributes/naturalperson/PersonIdentifier"));
+        
         ac.setEngCurrentFamilyName(user.getLastName());
         ac.setEngCurrentGivenName(user.getFirstName());
         ac.setNativeCurrentGivenName(user.getFirstName());
@@ -202,8 +207,7 @@ public class Wrappers {
         String pass = RandomStringUtils.randomAlphabetic(5).toLowerCase();
         ac.setOpenPassword(pass);
         ac.setPassword(pass);
-        ac.setUsername(user.getFirstName()+"_"+user.getLastName());
-        
+        ac.setUsername(user.getFirstName() + "_" + user.getLastName());
 
         return ac.build();
     }

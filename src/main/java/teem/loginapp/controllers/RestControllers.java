@@ -52,6 +52,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import teem.loginapp.pojo.IssErrorResponse;
 import teem.loginapp.service.ActiveDirectoryService;
 import teem.loginapp.service.PropertiesService;
+import teem.loginapp.utils.AccountUtils;
 import teem.loginapp.utils.IssErrorMapper;
 import teem.loginapp.utils.Translator;
 
@@ -186,7 +187,15 @@ public class RestControllers {
                         .append(" ")
                         .append(lastName);
 
-                mailserv.prepareAndSend(email, REGISTER_SUBJECT, userNameBuilder.toString(), displayName, password);
+                //if this is the first time the user is registering, i.e. if he has not forgotten they are registering
+                //send them a welcome email
+                LOG.info("searching with " + account.getEid());
+
+                if (accountService.findByEid(account.getEid()) == null) {
+                    //check if we have another user with the same name_surname combination 
+                    // which is used as the primary key in the swellrt mongodb
+                    mailserv.prepareAndSend(email, REGISTER_SUBJECT, userNameBuilder.toString(), displayName, password);
+                }
             } else {
                 //uagean users need not provide an email while registering
                 LOG.info("No email found for account with eID" + account.getEid());
@@ -206,6 +215,7 @@ public class RestControllers {
                 account.setLocalPassword("");
             }
 
+            account = AccountUtils.updateAccountId(account, accountService);
             accountService.saveOrUpdate(account);
             return new ResponseForStork(true);
         } catch (IOException e) {
@@ -332,6 +342,7 @@ public class RestControllers {
         Callable<String> response = () -> {
             LOG.info("Got event token " + token);
             LOG.info("Event " + event.getWaveid());
+            LOG.info("EVENT:: " + event.toString());
             if (token != null && token.equals(this.token)) {
                 if (event != null && event.getWaveid() != null) {
                     List<String> participants = projectServ.findByWave_id(event.getWaveid())

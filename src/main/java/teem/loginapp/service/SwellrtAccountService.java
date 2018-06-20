@@ -5,6 +5,7 @@
  */
 package teem.loginapp.service;
 
+import java.util.List;
 import teem.loginapp.model.dmo.AccountBuilder.SwellrtAccountMngDMO;
 
 /**
@@ -16,9 +17,12 @@ public interface SwellrtAccountService {
     public void saveOrUpdate(SwellrtAccountMngDMO account);
 
     public void saveOrUpdateTeemAttributes(SwellrtAccountMngDMO account);
-    
+
     public SwellrtAccountMngDMO findByToken(String token);
 
     public SwellrtAccountMngDMO findByEid(String eid);
+
     public SwellrtAccountMngDMO findById(String id);
+
+    public List<SwellrtAccountMngDMO> findByFirstAndLast(String firstName, String lastName);
 }

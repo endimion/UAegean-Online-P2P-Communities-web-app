@@ -15,6 +15,7 @@ public interface PropertiesService {
     public Properties getProperties();
     
     public String getNode();
+     public String getPreNode();
     public String getSP();
     public String getSamlType();
     public String getServer();
