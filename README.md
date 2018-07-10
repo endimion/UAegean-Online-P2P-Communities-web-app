@@ -38,8 +38,8 @@ handles both login/registration requests by the Teem framework and requests/resp
 
 This repository is seperated in the following parts:
 
-* **teemLoginApp**, this repository folder contains the microservice responsible for integrating the eIDAS infrastructure with Teem
-* **teem**, contains the actual Teem instance parametrized to implement  the Online Community Student Program facilities and services  
+* **src**, this repository folder contains the microservice responsible for integrating the eIDAS infrastructure with Teem
+ 
 
 
 
@@ -89,9 +89,7 @@ Teem έτσι ώστε να επιτρέπεται μόνο η είσοδος σ
 
 Το αποθετήριο είναι χωρισμένο στα εξής μέρη:
 
-* **teemLoginApp**, περιλαμβάνει ένα  microservice το οποίο διαχειρίζεται την διασύνδεση του Teem  με τον κόμβο eIDAS
-* **teem**, περιλαμβάνει τη παραμετροποιημένη εκδοχή του Teem  το οποίο είναι και η υλοποίηση του  Online Community Student Program facilities and services  
-
+* **src**, περιλαμβάνει ένα  microservice το οποίο διαχειρίζεται την διασύνδεση του Teem με τον κόμβο eIDAS
 
 
 ### ReadMe.docx

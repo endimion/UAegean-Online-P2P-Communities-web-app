@@ -18,8 +18,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Create a new account</title>
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"></link>-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/${css}">
         <link rel="icon"
@@ -64,10 +64,10 @@
                             </div>
 
                             <div class="row instructions">
-                                <div  class="col s12 flow-text hide-on-large-only">
+                                <div  id="mobile" class="col s12 flow-text hide-on-large-only">
                                     <p>
                                         <b>Identify with eIDAS eID:</b> You will now be directed to the eIDAS Network to securely identify and trustly 
-                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a href="#modal1">HERE</a>
+                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a class="modal-trigger" href="#modal1">HERE</a>
                                     </p>
                                     <p>
                                         The eIDAS Network will provide us with those attributes from the attribute provider you will suggest (eID-EU)
@@ -133,7 +133,7 @@
                                 <div  class="col s12  hide-on-med-and-down ">
                                     <p>
                                         <b>Identify with eIDAS eID:</b> You will now be directed to the eIDAS Network to securely identify and trustly 
-                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a href="#modal1">HERE</a>
+                                        provide us your main identity attributes. Review the identification attributes that will be requested  <a class="modal-trigger" href="#modal1">HERE</a>
                                     </p>
                                     <p>
                                         The eIDAS Network will provide us with those attributes from the attribute provider you will suggest (eID-EU)
@@ -228,11 +228,12 @@
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
         <script>
 
                                             $(document).ready(function () {
-                                                $('select').material_select();
+                                                $('select').formSelect();
+                                                $('.modal').modal();
                                                 // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
                                                 $('.modal').modal();
 
@@ -253,12 +254,12 @@
 
                                             function onNextClick() {
 //                                                let country = $("#countrySelection").val();
-                                                let countrySelector = $("#countrySelection").is(":visible") ? $("#countrySelection") : $("#countrySelection2");
+                                                let countrySelector = $("#mobile").is(":visible") ? $("#countrySelection") : $("#countrySelection2");
                                                 let country = countrySelector.val();
                                                 let typeOfId = $('#typeOfLogin').val();
                                                 let location = "";
                                                 let iss = "${nodePre}";
-                                                if(country === "GR"){
+                                                if (country === "GR") {
                                                     iss = "${node}";
                                                 }
                                                 if (typeOfId === "eIDAS") {
@@ -267,7 +268,7 @@
                                                             + "&sp=${sp}"
                                                             + "&cc=" + country + "&saml=${samlType}";
                                                 } else {
-                                                    location = iss+ "?t=${token}"
+                                                    location = iss + "?t=${token}"
                                                             + "&sp=${sp}"
                                                             + "&cc=" + country + "&saml=${samlType}";
                                                 }
@@ -275,7 +276,7 @@
                                             }
 
                                             function onNextClickUAegean() {
-                                                let location = "http://eidasiss.aegean.gr:8081/ISS2/ldap.jsp?t=${token}" + "&sp=${sp}";
+                                                let location = "https://eidasiss.aegean.gr:8081/ISS2/ldap.jsp?t=${token}" + "&sp=${sp}";
                                                 window.location = location;
                                             }
 

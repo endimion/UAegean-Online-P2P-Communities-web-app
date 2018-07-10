@@ -20,8 +20,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Create a new account</title>
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"></link>-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
@@ -62,10 +62,10 @@
                             </div>
                             <div class="col s12">
                                 <div class="row instructions">
-                                    <div class="col s12 flow-text hide-on-large-only">
+                                    <div id="mobile" class="col s12 flow-text hide-on-large-only">
                                         <p>
                                             <b>Identify with eIDAS eID:</b> You will now be directed to the eIDAS Network to securely identify and trustly 
-                                            provide us your main identity attributes. Review the identification attributes that will be requested  <a href="#modal1">HERE</a>
+                                            provide us your main identity attributes. Review the identification attributes that will be requested  <a class="modal-trigger" href="#modal1">HERE</a>
                                         </p>
                                         <p>
                                             The eIDAS Network will provide us with those attributes from the attribute provider you will suggest (eID-EU)
@@ -143,7 +143,7 @@
                                     <div class="col s12 hide-on-med-and-down ">
                                         <p>
                                             <b>Identify with eIDAS eID:</b> You will now be directed to the eIDAS Network to securely identify and trustly 
-                                            provide us your main identity attributes. Review the identification attributes that will be requested  <a href="#modal1">HERE</a>
+                                            provide us your main identity attributes. Review the identification attributes that will be requested  <a class="modal-trigger" href="#modal1">HERE</a>
                                         </p>
                                         <p>
                                             The eIDAS Network will provide us with those attributes from the attribute provider you will suggest (eID-EU)
@@ -154,7 +154,7 @@
                                         <div class="row">
 
                                             <div class="input-field col s12">
-                                                <select id="countrySelection" class="icons">
+                                                <select id="countrySelection2" class="icons">
                                                     <!--<option value="" disabled selected></option>-->
                                                     <c:forEach var="country" items="${countries}">
                                                         <c:if test = "${country.code == 'GR'}">
@@ -171,13 +171,13 @@
 
                                             <div class="row" style="margin-bottom: 0px;">
                                                 <div class="input-field inline col s12" style="width:98%;margin-left:1%;">
-                                                    <input id="email" type="email" class="validate">
+                                                    <input id="emailLarge" type="email" class="validate">
                                                     <label for="email" data-error="wrong" data-success="right">Email</label>
                                                 </div>
 
 
                                                 <div class="input-field col s12" style="width:98%;margin-left:1%;">
-                                                    <input id="email2" type="email" class="validate">
+                                                    <input id="email2Large" type="email" class="validate">
                                                     <label for="email2">Retype Email</label>
                                                 </div>
 
@@ -279,13 +279,12 @@
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
         <script>
 
 
                                                 $(document).ready(function () {
-                                                    $('select').material_select();
+                                                    $('select').formSelect();
                                                     $('.modal').modal();
 
                                                     if (!$('#countrySelection').val()) {
@@ -304,10 +303,13 @@
 
                                                 function onNextClick() {
                                                     let token = "${token}";
-                                                    let email = $("#email").val();
-                                                    let email2 = $("#email2").val();
+                                                    let emailSelector1 = $("#mobile").is(":visible") ? $("#email") : $("#emailLarge");
+                                                    let emailSelector2 = $("#mobile").is(":visible") ? $("#email2") : $("#email2Large");
+                                                    let email = emailSelector1.val();
+                                                    let email2 = emailSelector2.val();
 
-                                                    let country = $("#countrySelection").val();
+                                                    let countrySelector = $("#mobile").is(":visible") ? $("#countrySelection") : $("#countrySelection2");
+                                                    let country = countrySelector.val();
                                                     let typeOfId = $('#typeOfLogin').val();
                                                     let location = "";
                                                     let iss = "${nodePre}";
@@ -316,7 +318,7 @@
                                                     }
                                                     if (typeOfId === "eIDAS") {
                                                         //                                            location = "http://84.205.248.180/ISSPlus/ValidateToken?t=${token}"
-                                                        location = iss + "?t=${token}"  + "/" + email
+                                                        location = iss + "?t=${token}" + "/" + email
                                                                 + "&sp=${sp}"
                                                                 + "&cc=" + country + "&saml=${samlType}";
                                                     } else {
@@ -361,7 +363,7 @@
                                                     let email = $("#email").val();
                                                     let email2 = $("#email2").val();
 
-                                                    let location = "http://eidasiss.aegean.gr:8081/ISS2/ldap.jsp?t=${token}" + "/" + email + "&sp=${sp}";
+                                                    let location = "https://eidasiss.aegean.gr:8081/ISS2/ldap.jsp?t=${token}" + "/" + email + "&sp=${sp}";
                                                     window.location = location;
                                                 }
 

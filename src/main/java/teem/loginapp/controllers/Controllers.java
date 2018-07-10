@@ -129,6 +129,7 @@ public class Controllers {
         mv.addObject("token", token);
         mv.addObject("sp", props.getSP());
         mv.addObject("node", props.getNode());
+        mv.addObject("nodePre", props.getPreNode());
         mv.addObject("samlType", props.getSamlType());
         mv.addObject("countries", countriesService.findAll());
         if (Boolean.parseBoolean(props.getProperties().get("mastiha").toString())) {
@@ -302,17 +303,21 @@ public class Controllers {
                 if (token.endsWith("/")) {
                     token = token.substring(0, token.length() - 1);
                 }
+                LOG.info("Token in cache: " + token);
+                LOG.info("Cache Key: " + httpRequest.getRemoteAddr());
+
                 cacheManager.getCache("ips").put(httpRequest.getRemoteAddr(), token);
                 AccountBuilder.SwellrtAccountMngDMO account = Wrappers.wrapLinkedInResponseToAccount(userResponse.getBody());
                 LOG.info("LinkedIn Response:: " + userResponse.getBody());
                 account.setToken(token);
-                account.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+
                 if (accountService.findByEid(account.getEid()) == null) {
                     account = AccountUtils.updateAccountId(account, accountService);
                 } else {
                     account = accountService.findByEid(account.getEid());
                     account.setToken(token);
                 }
+                account.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
                 accountService.saveOrUpdate(account);
 
                 //Service code

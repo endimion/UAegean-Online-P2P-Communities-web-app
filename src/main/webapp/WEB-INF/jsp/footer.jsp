@@ -21,7 +21,7 @@
                 </a>
             </div>
             <div class="col s12  m4 footerCol" style="padding-left: 5%;">
-                <p style="margin-top: 0;text-align: justify;">
+                <p style="margin-top: 0;text-align: justify; color:black;">
 
                     The integration of the UAegean Online P2P Communities Project with the eIDAS Network has been implemented by 
                     <a href="atlantis-group.gr">UAegean | i4m Lab</a> , and funded by the European Commission (<a href="https://ec.europa.eu/inea/en/connecting-europe-facility/cef-teleco">
